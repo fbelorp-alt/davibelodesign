@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Davi Belo Design — sites que vendem</title>
+  <meta name="description" content="Estúdio de sites e landing pages. Home, projetos e contato da Davi Belo Design." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314110e'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%23f4efe6'%3Edb%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Sora:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #14110e;
+      --ink-soft: #3d3832;
+      --paper: #f3eee6;
+      --line: #d4cbb8;
+      --accent: #b44a1e;
+      --white: #fffaf3;
+      --max: 1120px;
+      --nav-h: 72px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0;
+      font-family: "Sora", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .site-header {
+      position: sticky; top: 0; z-index: 20; height: var(--nav-h);
+      display: flex; align-items: center;
+      background: #f3eee6ee;
+      border-bottom: 1px solid var(--line);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      width: min(var(--max), calc(100% - 40px)); margin-inline: auto;
+    }
+    .brand {
+      display: flex; align-items: baseline; gap: 8px;
+      font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.78rem;
+    }
+    .brand em {
+      font-style: normal; color: var(--accent); font-family: "Newsreader", Georgia, serif;
+      font-size: 1.15rem; letter-spacing: 0; text-transform: none; font-weight: 600;
+    }
+    .nav { display: flex; align-items: center; gap: 28px; font-size: 0.92rem; }
+    .nav a.is-on { color: var(--accent); }
+    .nav-toggle {
+      display: none; border: 1px solid var(--line); background: var(--white);
+      width: 42px; height: 42px; border-radius: 8px; cursor: pointer;
+    }
+    .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+      display: block; width: 16px; height: 1.5px; background: var(--ink); position: relative; margin: auto;
+    }
+    .nav-toggle span::before, .nav-toggle span::after { content: ""; position: absolute; left: 0; }
+    .nav-toggle span::before { top: -5px; }
+    .nav-toggle span::after { top: 5px; }
+    .hero {
+      padding: 72px 0 56px; display: grid; grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px; align-items: end; border-bottom: 1px solid var(--line);
+    }
+    .kicker {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin: 0 0 16px; font-weight: 600;
+    }
+    h1, h2, h3 {
+      font-family: "Newsreader", Georgia, serif; font-weight: 500;
+      letter-spacing: -0.03em; line-height: 1.08; margin: 0;
+    }
+    h1 { font-size: clamp(2.6rem, 7vw, 5.2rem); }
+    h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    h3 { font-size: 1.45rem; }
+    .lede { font-size: 1.12rem; color: var(--ink-soft); max-width: 38ch; margin: 22px 0 0; }
+    .hero-aside {
+      padding: 22px 24px 20px; background: var(--ink); color: var(--paper);
+      min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-aside p { margin: 0; font-family: "Newsreader", Georgia, serif; font-size: 1.35rem; line-height: 1.3; }
+    .hero-aside small { color: #cfc6b6; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.68rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 18px; border-radius: 999px; font-size: 0.88rem; font-weight: 600;
+      border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+    }
+    .btn.ghost { background: transparent; color: var(--ink); }
+    .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn.ghost:hover { color: #fff; }
+    section { padding: 72px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 36px; }
+    .section-head p { margin: 0; max-width: 36ch; color: var(--ink-soft); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .step { padding: 24px; background: var(--white); border: 1px solid var(--line); }
+    .step span { font-family: "Newsreader", Georgia, serif; font-size: 1.8rem; color: var(--accent); }
+    .step p { margin: 12px 0 0; color: var(--ink-soft); }
+    .projects { display: grid; gap: 16px; }
+    .project {
+      display: grid; grid-template-columns: 140px 1fr auto; gap: 24px; align-items: center;
+      padding: 22px 8px 22px 0; border-top: 1px solid var(--line);
+    }
+    .project:last-child { border-bottom: 1px solid var(--line); }
+    .thumb { height: 88px; border-radius: 4px; }
+    .t1 { background: linear-gradient(135deg, #1d3a34, #7ea18d); }
+    .t2 { background: linear-gradient(135deg, #3b2118, #c47a4a); }
+    .t3 { background: linear-gradient(135deg, #1a2438, #6e88b8); }
+    .t4 { background: linear-gradient(135deg, #3a2a12, #d2b16a); }
+    .t5 { background: linear-gradient(135deg, #2a1824, #b06a86); }
+    .t6 { background: linear-gradient(135deg, #14241c, #5d8a6a); }
+    .project h3 { margin-bottom: 6px; }
+    .project p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+    .tag { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+    .about { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; }
+    .about p { color: var(--ink-soft); font-size: 1.05rem; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .filters button {
+      border: 1px solid var(--line); background: transparent; padding: 8px 14px;
+      border-radius: 999px; cursor: pointer; font: inherit; font-size: 0.82rem;
+    }
+    .filters button.is-on, .filters button:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .page-hero { padding: 8px 0 28px; }
+    .page-hero h1 { max-width: 14ch; }
+    .contact-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 40px; }
+    .contact-card { background: var(--ink); color: var(--paper); padding: 28px; min-height: 280px; }
+    .contact-card a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+    .contact-card p { color: #d9d0c2; }
+    form { display: grid; gap: 14px; }
+    label { display: grid; gap: 6px; font-size: 0.8rem; font-weight: 600; }
+    input, textarea, select {
+      font: inherit; padding: 12px 14px; border: 1px solid var(--line);
+      background: var(--white); color: var(--ink); border-radius: 6px;
+    }
+    textarea { min-height: 140px; resize: vertical; }
+    .form-note { font-size: 0.82rem; color: var(--ink-soft); }
+    .site-footer {
+      border-top: 1px solid var(--line); padding: 28px 0 40px;
+      display: flex; justify-content: space-between; gap: 16px; color: var(--ink-soft); font-size: 0.82rem;
+    }
+    .toast { display: none; margin-top: 8px; padding: 10px 12px; background: #e4f0d8; border: 1px solid #9db986; font-size: 0.85rem; }
+    .toast.show { display: block; }
+    @media (max-width: 820px) {
+      .hero, .about, .contact-grid, .project { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .nav-toggle { display: grid; }
+      .nav {
+        display: none; position: absolute; top: var(--nav-h); left: 0; right: 0;
+        background: var(--paper); border-bottom: 1px solid var(--line);
+        padding: 18px 20px 22px; flex-direction: column; align-items: flex-start;
+      }
+      body.nav-open .nav { display: flex; }
+      .section-head { flex-direction: column; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home">davi belo <em>design</em></a>
+      <button class="nav-toggle" type="button" aria-label="Abrir menu"><span></span></button>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home">
+      <div class="wrap hero">
+        <div>
+          <p class="kicker">Estúdio independente</p>
+          <h1>Sites claros.<br />Páginas que vendem.</h1>
+          <p class="lede">Landing, institucional e páginas de cliente — do rascunho ao ar, sem plataforma pesada e sem firula.</p>
+          <div class="actions">
+            <a class="btn" href="#contato">Pedir um orçamento</a>
+            <a class="btn ghost" href="#projetos">Ver projetos</a>
+          </div>
+        </div>
+        <aside class="hero-aside">
+          <p>Uma página boa se entende em três segundos. O resto é conversa.</p>
+          <small>Davi Belo · design</small>
+        </aside>
+      </div>
+
+      <div class="wrap" style="padding-top:72px">
+        <div class="section-head">
+          <h2>Como o trabalho anda</h2>
+          <p>Esqueleto simples de propósito: você vê o caminho inteiro antes de contratar o resto.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span>01</span>
+            <h3>Briefing</h3>
+            <p>Objetivo, público e o que precisa estar na primeira dobra. Sem reunião eterna.</p>
+          </article>
+          <article class="step">
+            <span>02</span>
+            <h3>Página</h3>
+            <p>Layout no ar (subdomínio ou pasta de preview) pra você e o cliente aprovarem.</p>
+          </article>
+          <article class="step">
+            <span>03</span>
+            <h3>Publicar</h3>
+            <p>Domínio do cliente, Hostingator, formulário e o que mais a página pedir.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="wrap about" style="padding:72px 0">
+        <h2>Quem faz</h2>
+        <div>
+          <p>A Davi Belo Design nasceu pra montar sites de verdade: rápidos de publicar, fáceis de explicar e prontos pra vender. Primeiro a página do estúdio. Depois as páginas dos clientes, cada uma no próprio endereço.</p>
+          <p>Este HTML é o esqueleto — home, projetos e contato num arquivo só. O resto entra conforme o portfólio crescer.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projetos">
+      <div class="wrap">
+        <div class="page-hero">
+          <p class="kicker">Portfólio</p>
+          <h1>Projetos no ar e em construção.</h1>
+          <p class="lede">Alguns já existem. Os outros marcam o tipo de trabalho que este estúdio quer fazer.</p>
+        </div>
+        <div class="filters">
+          <button type="button" class="is-on" data-filter="todos">Todos</button>
+          <button type="button" data-filter="institucional">Institucional</button>
+          <button type="button" data-filter="landing">Landing</button>
+          <button type="button" data-filter="cliente">Cliente</button>
+        </div>
+        <div class="projects">
+          <article class="project" data-cat="institucional">
+            <div class="thumb t1"></div>
+            <div>
+              <p class="tag">Institucional</p>
+              <h3>Brasil Tour &amp; Business</h3>
+              <p>Site de turismo corporativo. Peça-chave do portfólio — entra o link quando o domínio estiver no ar.</p>
+            </div>
+            <span>01</span>
+          </article>
+          <article class="project" data-cat="landing">
+            <div class="thumb t2"></div>
+            <div>
+              <p class="tag">Landing</p>
+              <h3>Oferta única</h3>
+              <p>Página de captação: headline, prova, formulário. Placeholder até o primeiro cliente deste tipo.</p>
+            </div>
+            <span>02</span>
+          </article>
+          <article class="project" data-cat="cliente">
+            <div class="thumb t3"></div>
+            <div>
+              <p class="tag">Cliente</p>
+              <h3>Preview em subdomínio</h3>
+              <p>cliente.davibelodesign.com — o cliente vê, comenta, aprova. Domínio próprio só depois.</p>
+            </div>
+            <span>03</span>
+          </article>
+          <article class="project" data-cat="institucional">
+            <div class="thumb t4"></div>
+            <div>
+              <p class="tag">Institucional</p>
+              <h3>Estúdio / serviço local</h3>
+              <p>Quem é, o que faz, como chamar. Estrutura pronta pra clínicas, escritórios e lojas.</p>
+            </div>
+            <span>04</span>
+          </article>
+          <article class="project" data-cat="landing">
+            <div class="thumb t5"></div>
+            <div>
+              <p class="tag">Landing</p>
+              <h3>Lançamento</h3>
+              <p>Contagem, lista de espera, WhatsApp. Encaixe típico de campanha curta.</p>
+            </div>
+            <span>05</span>
+          </article>
+          <article class="project" data-cat="cliente">
+            <div class="thumb t6"></div>
+            <div>
+              <p class="tag">Cliente</p>
+              <h3>Esta página</h3>
+              <p>O próprio site da Davi Belo Design: home, projetos e contato neste HTML.</p>
+            </div>
+            <span>06</span>
+          </article>
+        </div>
+        <div class="actions" style="padding: 48px 0 0">
+          <a class="btn" href="#contato">Quero uma página assim</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato">
+      <div class="wrap">
+        <div class="page-hero">
+          <p class="kicker">Contato</p>
+          <h1>Conte o que a página precisa fazer.</h1>
+        </div>
+        <div class="contact-grid">
+          <aside class="contact-card">
+            <p class="kicker" style="color:#e7b39a">Direto</p>
+            <h2 style="color:var(--paper)">E-mail e WhatsApp</h2>
+            <p>O formulário abre o seu e-mail. No Hostingator dá pra trocar por PHP sem mudar o layout.</p>
+            <p><a id="email-link" href="mailto:contato@davibelodesign.com">contato@davibelodesign.com</a></p>
+            <p><a class="btn" id="wa-link" href="#" hidden>Chamar no WhatsApp</a></p>
+          </aside>
+          <form id="contato-form">
+            <label>Nome <input name="nome" type="text" required autocomplete="name" /></label>
+            <label>E-mail <input name="email" type="email" required autocomplete="email" /></label>
+            <label>WhatsApp <input name="fone" type="tel" autocomplete="tel" placeholder="11 9xxxx-xxxx" /></label>
+            <label>O que você precisa
+              <select name="tipo">
+                <option value="landing">Landing page</option>
+                <option value="institucional">Site institucional</option>
+                <option value="cliente">Página de cliente / preview</option>
+                <option value="outro">Ainda não sei</option>
+              </select>
+            </label>
+            <label>Mensagem
+              <textarea name="mensagem" required placeholder="Prazo, referência, o que a página tem que vender."></textarea>
+            </label>
+            <button class="btn" type="submit">Enviar</button>
+            <p class="form-note">Troque o e-mail e o WhatsApp no script no final deste HTML (variável DBD).</p>
+            <div class="toast">Se o e-mail não abriu, copie a mensagem e mande para o endereço ao lado.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap site-footer">
+      <span>© <span id="y"></span> Davi Belo Design</span>
+      <span>Sites e páginas — do rascunho ao ar</span>
+    </div>
+  </footer>
+
+  <script>
+    const DBD = {
+      email: "contato@davibelodesign.com",
+      whatsapp: "" // só dígitos, ex: 5511999999999
+    };
+    document.getElementById("y").textContent = new Date().getFullYear();
+    document.querySelector(".nav-toggle").onclick = () => document.body.classList.toggle("nav-open");
+    document.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", () => document.body.classList.remove("nav-open")));
+    const el = document.getElementById("email-link");
+    el.textContent = DBD.email;
+    el.href = "mailto:" + DBD.email;
+    const wa = document.getElementById("wa-link");
+    if (DBD.whatsapp) {
+      wa.hidden = false;
+      wa.href = "https://wa.me/" + DBD.whatsapp + "?text=" + encodeURIComponent("Olá, quero um site com a Davi Belo Design.");
+    }
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-filter]").forEach((b) => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const f = btn.dataset.filter;
+        document.querySelectorAll("[data-cat]").forEach((card) => {
+          card.style.display = f === "todos" || card.dataset.cat === f ? "" : "none";
+        });
+      };
+    });
+    document.getElementById("contato-form").onsubmit = (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(e.target));
+      const body = "Nome: " + d.nome + "%0AEmail: " + d.email + "%0AWhatsApp: " + d.fone + "%0ATipo: " + d.tipo + "%0A%0A" + d.mensagem;
+      window.location.href = "mailto:" + DBD.email + "?subject=" + encodeURIComponent("Novo projeto — " + d.nome) + "&body=" + body;
+      document.querySelector(".toast").classList.add("show");
+    };
+  </script>
+</body>
+</html>
