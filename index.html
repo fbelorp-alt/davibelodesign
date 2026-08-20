@@ -480,10 +480,14 @@
       .work-row { grid-template-columns: 72px 1fr; }
       .work-row .work-tag { grid-column: 2; }
       .orbit-ring, .orbit-ring-2 { opacity: 0.45; right: -18%; }
+      .hero {
+        align-items: end;
+        padding-bottom: 72px;
+      }
+      .hero-copy { width: min(640px, calc(100% - 32px)); margin-left: 16px; }
       .hero-veil {
         background:
-          linear-gradient(180deg, rgba(5,7,11,0.55) 0%, rgba(5,7,11,0.72) 45%, rgba(5,7,11,0.92) 100%),
-          linear-gradient(90deg, rgba(5,7,11,0.75), rgba(5,7,11,0.25));
+          linear-gradient(180deg, rgba(5,7,11,0.2) 0%, rgba(5,7,11,0.35) 40%, rgba(5,7,11,0.88) 72%, rgba(5,7,11,0.96) 100%);
       }
       .nav-toggle { display: grid; }
       .nav {
