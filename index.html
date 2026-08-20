@@ -3,331 +3,679 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Davi Belo Design — sites que vendem</title>
-  <meta name="description" content="Estúdio de sites e landing pages. Home, projetos e contato da Davi Belo Design." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314110e'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%23f4efe6'%3Edb%3C/text%3E%3C/svg%3E" />
+  <title>Davi Belo Design — páginas que vendem</title>
+  <meta name="description" content="Estúdio de landing pages e sites de conversão. Preview no meu domínio. Quando aprovar, o site vai para o seu." />
+  <meta name="theme-color" content="#05070b" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%237ef0d4'/%3E%3Cstop offset='1' stop-color='%23f0c75e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='%05070b'/%3E%3Cpath d='M32 10 L50 28 L32 54 L14 28 Z' fill='url(%23g)'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Sora:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #14110e;
-      --ink-soft: #3d3832;
-      --paper: #f3eee6;
-      --line: #d4cbb8;
-      --accent: #b44a1e;
-      --white: #fffaf3;
-      --max: 1120px;
-      --nav-h: 72px;
+      --void: #05070b;
+      --ink: #0b1018;
+      --panel: #101722;
+      --line: rgba(255, 255, 255, 0.1);
+      --mist: rgba(232, 240, 255, 0.68);
+      --snow: #f4f7ff;
+      --crystal: #7ef0d4;
+      --gold: #f0c75e;
+      --max: 1180px;
+      --nav-h: 76px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
+
     *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
     body {
       margin: 0;
-      font-family: "Sora", system-ui, sans-serif;
-      color: var(--ink);
-      background: var(--paper);
+      font-family: "Manrope", sans-serif;
+      color: var(--snow);
+      background: var(--void);
       line-height: 1.55;
+      overflow-x: hidden;
+      cursor: none;
     }
+    body.touch { cursor: auto; }
+    body.touch .cursor, body.touch .cursor-dot { display: none !important; }
+
     a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; }
+    img, canvas { display: block; max-width: 100%; }
     .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+
+    /* Custom cursor */
+    .cursor, .cursor-dot {
+      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000;
+      border-radius: 50%; transform: translate(-50%, -50%);
+      transition: width .25s var(--ease), height .25s var(--ease), background .25s, border-color .25s, opacity .25s;
+    }
+    .cursor {
+      width: 42px; height: 42px;
+      border: 1px solid rgba(126, 240, 212, 0.55);
+      mix-blend-mode: difference;
+    }
+    .cursor.is-hot { width: 72px; height: 72px; border-color: var(--gold); }
+    .cursor-dot {
+      width: 6px; height: 6px; background: var(--crystal);
+      box-shadow: 0 0 18px rgba(126, 240, 212, 0.8);
+    }
+
+    /* Ambient aurora */
+    .aurora {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 15% 20%, rgba(126, 240, 212, 0.14), transparent 55%),
+        radial-gradient(ellipse 50% 35% at 85% 15%, rgba(240, 199, 94, 0.12), transparent 50%),
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(56, 120, 255, 0.08), transparent 55%),
+        var(--void);
+    }
+    .noise {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
     .site-header {
-      position: sticky; top: 0; z-index: 20; height: var(--nav-h);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: var(--nav-h);
       display: flex; align-items: center;
-      background: #f3eee6ee;
-      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.35) 70%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .35s, background .35s;
+    }
+    .site-header.scrolled {
+      border-bottom-color: var(--line);
+      background: rgba(5, 7, 11, 0.86);
     }
     .header-inner {
-      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
       width: min(var(--max), calc(100% - 40px)); margin-inline: auto;
     }
     .brand {
-      display: flex; align-items: baseline; gap: 8px;
-      font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.78rem;
+      display: inline-flex; align-items: baseline; gap: 0.35rem;
+      font-family: "Syne", sans-serif;
+      font-weight: 800; font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      letter-spacing: -0.03em; text-transform: lowercase;
     }
-    .brand em {
-      font-style: normal; color: var(--accent); font-family: "Newsreader", Georgia, serif;
-      font-size: 1.15rem; letter-spacing: 0; text-transform: none; font-weight: 600;
+    .brand span {
+      background: linear-gradient(120deg, var(--crystal), var(--gold));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .nav { display: flex; align-items: center; gap: 28px; font-size: 0.92rem; }
-    .nav a.is-on { color: var(--accent); }
+    .nav {
+      display: flex; align-items: center; gap: 28px;
+      font-size: 0.9rem; font-weight: 500; color: var(--mist);
+    }
+    .nav a { position: relative; transition: color .25s; }
+    .nav a::after {
+      content: ""; position: absolute; left: 0; bottom: -6px; width: 0; height: 1px;
+      background: linear-gradient(90deg, var(--crystal), var(--gold));
+      transition: width .3s var(--ease);
+    }
+    .nav a:hover { color: var(--snow); }
+    .nav a:hover::after { width: 100%; }
+
+    .lang-switch {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px; border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+    }
+    .lang-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 0; background: transparent; cursor: none;
+      padding: 7px 12px; border-radius: 999px;
+      color: var(--mist); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+      transition: background .25s, color .25s, transform .25s;
+    }
+    body.touch .lang-btn, body.touch .btn, body.touch .nav-toggle { cursor: pointer; }
+    .lang-btn.is-on {
+      background: rgba(126, 240, 212, 0.12);
+      color: var(--snow);
+      box-shadow: inset 0 0 0 1px rgba(126, 240, 212, 0.28);
+    }
+    .lang-btn:hover { transform: translateY(-1px); color: var(--snow); }
+    .flag { width: 18px; height: 12px; border-radius: 2px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,0.15); flex-shrink: 0; }
+    .flag svg { width: 100%; height: 100%; display: block; }
+
     .nav-toggle {
-      display: none; border: 1px solid var(--line); background: var(--white);
-      width: 42px; height: 42px; border-radius: 8px; cursor: pointer;
+      display: none; width: 44px; height: 44px; border-radius: 10px;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.03);
     }
     .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
-      display: block; width: 16px; height: 1.5px; background: var(--ink); position: relative; margin: auto;
+      display: block; width: 16px; height: 1.5px; background: var(--snow); margin: auto; position: relative;
     }
     .nav-toggle span::before, .nav-toggle span::after { content: ""; position: absolute; left: 0; }
     .nav-toggle span::before { top: -5px; }
     .nav-toggle span::after { top: 5px; }
+
+    /* HERO */
     .hero {
-      padding: 72px 0 56px; display: grid; grid-template-columns: 1.2fr 0.8fr;
-      gap: 48px; align-items: end; border-bottom: 1px solid var(--line);
+      position: relative; z-index: 2;
+      min-height: 100svh;
+      display: grid; align-items: center;
+      padding: calc(var(--nav-h) + 28px) 0 56px;
+      overflow: hidden;
     }
-    .kicker {
-      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--accent); margin: 0 0 16px; font-weight: 600;
+    .hero-stage {
+      position: absolute; inset: 0; z-index: 0;
     }
-    h1, h2, h3 {
-      font-family: "Newsreader", Georgia, serif; font-weight: 500;
-      letter-spacing: -0.03em; line-height: 1.08; margin: 0;
+    #globe-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
     }
-    h1 { font-size: clamp(2.6rem, 7vw, 5.2rem); }
-    h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
-    h3 { font-size: 1.45rem; }
-    .lede { font-size: 1.12rem; color: var(--ink-soft); max-width: 38ch; margin: 22px 0 0; }
-    .hero-aside {
-      padding: 22px 24px 20px; background: var(--ink); color: var(--paper);
-      min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;
+    .hero-veil {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, rgba(5,7,11,0.92) 0%, rgba(5,7,11,0.72) 38%, rgba(5,7,11,0.25) 62%, rgba(5,7,11,0.55) 100%),
+        linear-gradient(180deg, rgba(5,7,11,0.35) 0%, transparent 30%, rgba(5,7,11,0.75) 100%);
+      pointer-events: none;
     }
-    .hero-aside p { margin: 0; font-family: "Newsreader", Georgia, serif; font-size: 1.35rem; line-height: 1.3; }
-    .hero-aside small { color: #cfc6b6; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.68rem; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .orbit-ring {
+      position: absolute; right: 8%; top: 50%;
+      width: min(48vw, 520px); aspect-ratio: 1;
+      transform: translateY(-50%);
+      border: 1px dashed rgba(126, 240, 212, 0.18);
+      border-radius: 50%;
+      animation: spin 42s linear infinite;
+      pointer-events: none;
+    }
+    .orbit-ring::before {
+      content: ""; position: absolute; top: -6px; left: 50%;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 24px rgba(240, 199, 94, 0.8);
+      transform: translateX(-50%);
+    }
+    .orbit-ring-2 {
+      position: absolute; right: 3%; top: 50%;
+      width: min(58vw, 640px); aspect-ratio: 1;
+      transform: translateY(-50%);
+      border: 1px solid rgba(240, 199, 94, 0.1);
+      border-radius: 50%;
+      animation: spin 68s linear infinite reverse;
+      pointer-events: none;
+    }
+    @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+    .hero-copy {
+      position: relative; z-index: 2;
+      width: min(640px, calc(100% - 40px));
+      margin-left: max(20px, calc((100% - var(--max)) / 2));
+      padding-right: 20px;
+    }
+    .brand-hero {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 8vw, 5.6rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      margin: 0 0 22px;
+      text-transform: lowercase;
+    }
+    .brand-hero em {
+      font-style: normal; display: block;
+      background: linear-gradient(105deg, var(--crystal) 10%, var(--snow) 40%, var(--gold) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 0 28px rgba(126, 240, 212, 0.25));
+    }
+    .hero-line {
+      margin: 0;
+      max-width: 32ch;
+      font-size: clamp(1.05rem, 2.1vw, 1.25rem);
+      color: var(--mist);
+      font-weight: 500;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
     .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 12px 18px; border-radius: 999px; font-size: 0.88rem; font-weight: 600;
-      border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+      position: relative; overflow: hidden;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 22px; border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 700; font-size: 0.92rem;
+      transition: transform .3s var(--ease), box-shadow .3s, background .3s, border-color .3s;
+      cursor: none;
     }
-    .btn.ghost { background: transparent; color: var(--ink); }
-    .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn.ghost:hover { color: #fff; }
-    section { padding: 72px 0; }
-    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 36px; }
-    .section-head p { margin: 0; max-width: 36ch; color: var(--ink-soft); }
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .step { padding: 24px; background: var(--white); border: 1px solid var(--line); }
-    .step span { font-family: "Newsreader", Georgia, serif; font-size: 1.8rem; color: var(--accent); }
-    .step p { margin: 12px 0 0; color: var(--ink-soft); }
-    .projects { display: grid; gap: 16px; }
-    .project {
-      display: grid; grid-template-columns: 140px 1fr auto; gap: 24px; align-items: center;
-      padding: 22px 8px 22px 0; border-top: 1px solid var(--line);
+    .btn.primary {
+      background: linear-gradient(120deg, var(--crystal), #9af7e0 40%, var(--gold));
+      color: #061018;
+      box-shadow: 0 10px 40px rgba(126, 240, 212, 0.22);
     }
-    .project:last-child { border-bottom: 1px solid var(--line); }
-    .thumb { height: 88px; border-radius: 4px; }
-    .t1 { background: linear-gradient(135deg, #1d3a34, #7ea18d); }
-    .t2 { background: linear-gradient(135deg, #3b2118, #c47a4a); }
-    .t3 { background: linear-gradient(135deg, #1a2438, #6e88b8); }
-    .t4 { background: linear-gradient(135deg, #3a2a12, #d2b16a); }
-    .t5 { background: linear-gradient(135deg, #2a1824, #b06a86); }
-    .t6 { background: linear-gradient(135deg, #14241c, #5d8a6a); }
-    .project h3 { margin-bottom: 6px; }
-    .project p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
-    .tag { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-    .about { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; }
-    .about p { color: var(--ink-soft); font-size: 1.05rem; }
-    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-    .filters button {
-      border: 1px solid var(--line); background: transparent; padding: 8px 14px;
-      border-radius: 999px; cursor: pointer; font: inherit; font-size: 0.82rem;
+    .btn.primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 16px 50px rgba(240, 199, 94, 0.28);
     }
-    .filters button.is-on, .filters button:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-    .page-hero { padding: 8px 0 28px; }
-    .page-hero h1 { max-width: 14ch; }
-    .contact-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 40px; }
-    .contact-card { background: var(--ink); color: var(--paper); padding: 28px; min-height: 280px; }
-    .contact-card a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
-    .contact-card p { color: #d9d0c2; }
-    form { display: grid; gap: 14px; }
-    label { display: grid; gap: 6px; font-size: 0.8rem; font-weight: 600; }
+    .btn.ghost {
+      background: rgba(255,255,255,0.03);
+      border-color: var(--line);
+      color: var(--snow);
+    }
+    .btn.ghost:hover {
+      border-color: rgba(126, 240, 212, 0.45);
+      background: rgba(126, 240, 212, 0.08);
+      transform: translateY(-2px);
+    }
+    .btn .shine {
+      position: absolute; inset: 0; transform: translateX(-120%);
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.45), transparent 70%);
+      animation: shine 4.5s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0%, 55% { transform: translateX(-120%); }
+      75%, 100% { transform: translateX(120%); }
+    }
+
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--mist); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      animation: floaty 2.4s ease-in-out infinite;
+    }
+    .scroll-hint i {
+      width: 1px; height: 42px;
+      background: linear-gradient(180deg, var(--crystal), transparent);
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translate(-50%, 0); opacity: 0.7; }
+      50% { transform: translate(-50%, 8px); opacity: 1; }
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    section { position: relative; z-index: 2; padding: 100px 0; }
+    .section-kicker {
+      margin: 0 0 14px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--crystal);
+    }
+    h2 {
+      font-family: "Syne", sans-serif;
+      font-weight: 750; font-size: clamp(2rem, 4.8vw, 3.4rem);
+      letter-spacing: -0.04em; line-height: 1.05; margin: 0;
+    }
+    .section-lead {
+      margin: 16px 0 0; max-width: 48ch; color: var(--mist); font-size: 1.05rem;
+    }
+
+    /* Method */
+    .method-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      margin-top: 48px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 18px; overflow: hidden;
+    }
+    .method-item {
+      background: rgba(16, 23, 34, 0.92);
+      padding: 32px 28px 36px;
+      min-height: 240px;
+      position: relative;
+      transition: background .35s;
+    }
+    .method-item:hover {
+      background: linear-gradient(160deg, rgba(126, 240, 212, 0.08), rgba(16, 23, 34, 0.95));
+    }
+    .method-item strong {
+      font-family: "Syne", sans-serif;
+      font-size: 3rem; font-weight: 800; letter-spacing: -0.05em;
+      background: linear-gradient(180deg, var(--gold), transparent);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      display: block; margin-bottom: 18px; line-height: 1;
+    }
+    .method-item h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 1.35rem; margin: 0 0 10px; letter-spacing: -0.02em;
+    }
+    .method-item p { margin: 0; color: var(--mist); font-size: 0.95rem; }
+
+    /* Offer strip */
+    .offer {
+      margin-top: 28px;
+      padding: 28px 32px;
+      border-radius: 18px;
+      border: 1px solid rgba(126, 240, 212, 0.22);
+      background:
+        linear-gradient(120deg, rgba(126, 240, 212, 0.08), rgba(240, 199, 94, 0.05)),
+        rgba(16, 23, 34, 0.8);
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center;
+    }
+    .offer code {
+      display: inline-block; margin-top: 10px;
+      padding: 8px 12px; border-radius: 8px;
+      background: rgba(0,0,0,0.35); color: var(--crystal);
+      font-size: 0.85rem; border: 1px solid var(--line);
+    }
+
+    /* Work */
+    .work-list { margin-top: 44px; display: grid; gap: 14px; }
+    .work-row {
+      display: grid; grid-template-columns: 88px 1fr auto; gap: 22px; align-items: center;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.02);
+      transition: transform .35s var(--ease), border-color .35s, background .35s;
+    }
+    .work-row:hover {
+      transform: translateX(6px);
+      border-color: rgba(126, 240, 212, 0.35);
+      background: rgba(126, 240, 212, 0.05);
+    }
+    .work-thumb {
+      height: 64px; border-radius: 10px;
+      position: relative; overflow: hidden;
+    }
+    .work-thumb::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25), transparent 70%);
+      transform: translateX(-100%);
+      animation: shine 5s ease-in-out infinite;
+    }
+    .w1 { background: linear-gradient(135deg, #14352f, #7ef0d4); }
+    .w2 { background: linear-gradient(135deg, #3a2a12, #f0c75e); }
+    .w3 { background: linear-gradient(135deg, #18243a, #6ea8ff); }
+    .work-row h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 1.2rem; margin: 0 0 4px; letter-spacing: -0.02em;
+    }
+    .work-row p { margin: 0; color: var(--mist); font-size: 0.92rem; }
+    .work-tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Contact */
+    .contact-shell {
+      display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; margin-top: 40px;
+    }
+    .contact-panel {
+      padding: 32px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(126, 240, 212, 0.12), transparent 45%),
+        rgba(16, 23, 34, 0.9);
+      min-height: 320px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .contact-panel h3 {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em; margin: 10px 0 14px; line-height: 1.1;
+    }
+    .contact-panel p { color: var(--mist); margin: 0; }
+    .contact-panel a.mail {
+      display: inline-block; margin-top: 22px;
+      color: var(--crystal); font-weight: 700; font-size: 1.05rem;
+      border-bottom: 1px solid rgba(126, 240, 212, 0.35);
+    }
+    form {
+      display: grid; gap: 14px;
+      padding: 28px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+    }
+    label { display: grid; gap: 7px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mist); }
     input, textarea, select {
-      font: inherit; padding: 12px 14px; border: 1px solid var(--line);
-      background: var(--white); color: var(--ink); border-radius: 6px;
+      font: inherit; color: var(--snow);
+      padding: 13px 14px; border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.28);
+      outline: none;
+      transition: border-color .25s, box-shadow .25s;
     }
-    textarea { min-height: 140px; resize: vertical; }
-    .form-note { font-size: 0.82rem; color: var(--ink-soft); }
-    .site-footer {
-      border-top: 1px solid var(--line); padding: 28px 0 40px;
-      display: flex; justify-content: space-between; gap: 16px; color: var(--ink-soft); font-size: 0.82rem;
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(126, 240, 212, 0.5);
+      box-shadow: 0 0 0 3px rgba(126, 240, 212, 0.12);
     }
-    .toast { display: none; margin-top: 8px; padding: 10px 12px; background: #e4f0d8; border: 1px solid #9db986; font-size: 0.85rem; }
+    textarea { min-height: 130px; resize: vertical; }
+    .toast {
+      display: none; margin-top: 4px; padding: 10px 12px; border-radius: 10px;
+      background: rgba(126, 240, 212, 0.1); border: 1px solid rgba(126, 240, 212, 0.3);
+      font-size: 0.86rem; color: var(--crystal);
+    }
     .toast.show { display: block; }
-    @media (max-width: 820px) {
-      .hero, .about, .contact-grid, .project { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr; }
+
+    .site-footer {
+      position: relative; z-index: 2;
+      border-top: 1px solid var(--line);
+      padding: 28px 0 48px;
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      color: var(--mist); font-size: 0.84rem;
+    }
+
+    /* Magical diamond sparkles */
+    .sparkle-layer {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+    }
+    .sparkle {
+      position: absolute; width: 2px; height: 2px; border-radius: 50%;
+      background: var(--snow);
+      box-shadow: 0 0 8px rgba(255,255,255,0.8);
+      animation: twinkle var(--d, 3s) ease-in-out infinite;
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.4); }
+      50% { opacity: 0.9; transform: scale(1.4); }
+    }
+
+    @media (max-width: 900px) {
+      .method-grid, .contact-shell, .offer, .work-row { grid-template-columns: 1fr; }
+      .work-row { grid-template-columns: 72px 1fr; }
+      .work-row .work-tag { grid-column: 2; }
+      .orbit-ring, .orbit-ring-2 { opacity: 0.45; right: -18%; }
+      .hero-veil {
+        background:
+          linear-gradient(180deg, rgba(5,7,11,0.55) 0%, rgba(5,7,11,0.72) 45%, rgba(5,7,11,0.92) 100%),
+          linear-gradient(90deg, rgba(5,7,11,0.75), rgba(5,7,11,0.25));
+      }
       .nav-toggle { display: grid; }
       .nav {
         display: none; position: absolute; top: var(--nav-h); left: 0; right: 0;
-        background: var(--paper); border-bottom: 1px solid var(--line);
-        padding: 18px 20px 22px; flex-direction: column; align-items: flex-start;
+        flex-direction: column; align-items: flex-start; gap: 18px;
+        padding: 22px 20px 28px;
+        background: rgba(5, 7, 11, 0.96);
+        border-bottom: 1px solid var(--line);
       }
       body.nav-open .nav { display: flex; }
-      .section-head { flex-direction: column; align-items: start; }
+      .lang-switch { margin-left: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .cursor, .cursor-dot { display: none !important; }
+      body { cursor: auto; }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="sparkle-layer" id="sparkles" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+  <header class="site-header" id="header">
     <div class="header-inner">
-      <a class="brand" href="#home">davi belo <em>design</em></a>
-      <button class="nav-toggle" type="button" aria-label="Abrir menu"><span></span></button>
-      <nav class="nav">
-        <a href="#home">Home</a>
-        <a href="#projetos">Projetos</a>
-        <a href="#contato">Contato</a>
+      <a class="brand hot" href="#topo">davi belo <span>design</span></a>
+      <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
+      <nav class="nav" id="nav">
+        <a class="hot" href="#metodo" data-i18n="nav.method">Método</a>
+        <a class="hot" href="#trabalhos" data-i18n="nav.work">Trabalhos</a>
+        <a class="hot" href="#contato" data-i18n="nav.contact">Contato</a>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" class="lang-btn is-on hot" data-lang="pt" aria-pressed="true">
+            <span class="flag" aria-hidden="true">
+              <svg viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="12" fill="#009b3a"/><polygon points="9,1.2 16.2,6 9,10.8 1.8,6" fill="#fedf00"/><circle cx="9" cy="6" r="2.2" fill="#002776"/></svg>
+            </span>
+            PT
+          </button>
+          <button type="button" class="lang-btn hot" data-lang="en" aria-pressed="false">
+            <span class="flag" aria-hidden="true">
+              <svg viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="12" fill="#b22234"/><rect y="1" width="18" height="1" fill="#fff"/><rect y="3" width="18" height="1" fill="#fff"/><rect y="5" width="18" height="1" fill="#fff"/><rect y="7" width="18" height="1" fill="#fff"/><rect y="9" width="18" height="1" fill="#fff"/><rect y="11" width="18" height="1" fill="#fff"/><rect width="7.2" height="6.5" fill="#3c3b6e"/></svg>
+            </span>
+            EN
+          </button>
+        </div>
       </nav>
     </div>
   </header>
 
   <main>
-    <section id="home">
-      <div class="wrap hero">
-        <div>
-          <p class="kicker">Estúdio independente</p>
-          <h1>Sites claros.<br />Páginas que vendem.</h1>
-          <p class="lede">Landing, institucional e páginas de cliente — do rascunho ao ar, sem plataforma pesada e sem firula.</p>
-          <div class="actions">
-            <a class="btn" href="#contato">Pedir um orçamento</a>
-            <a class="btn ghost" href="#projetos">Ver projetos</a>
+    <section class="hero" id="topo">
+      <div class="hero-stage" aria-hidden="true">
+        <canvas id="globe-canvas"></canvas>
+        <div class="orbit-ring"></div>
+        <div class="orbit-ring-2"></div>
+        <div class="hero-veil"></div>
+      </div>
+      <div class="hero-copy">
+        <h1 class="brand-hero reveal">
+          davi belo
+          <em>design</em>
+        </h1>
+        <p class="hero-line reveal reveal-delay-1" data-i18n="hero.line">
+          Landing pages e sites que vendem — do rascunho ao ar, com preview no meu domínio até você aprovar.
+        </p>
+        <div class="actions reveal reveal-delay-2">
+          <a class="btn primary hot" href="#contato">
+            <span class="shine" aria-hidden="true"></span>
+            <span data-i18n="hero.cta1">Quero minha página</span>
+          </a>
+          <a class="btn ghost hot" href="#metodo" data-i18n="hero.cta2">Como funciona</a>
+        </div>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">
+        <span data-i18n="hero.scroll">scroll</span>
+        <i></i>
+      </div>
+    </section>
+
+    <section id="metodo">
+      <div class="wrap">
+        <p class="section-kicker reveal" data-i18n="method.kicker">Método diamante</p>
+        <h2 class="reveal reveal-delay-1" data-i18n="method.title">Você vê antes. Paga o domínio depois.</h2>
+        <p class="section-lead reveal reveal-delay-2" data-i18n="method.lead">
+          Eu monto a página, hospedo um preview no davibelodesign e você testa com calma. Quando o layout fechar, a gente sobe no domínio e na hospedagem do cliente.
+        </p>
+
+        <div class="method-grid">
+          <article class="method-item reveal">
+            <strong>01</strong>
+            <h3 data-i18n="method.s1t">Briefing rápido</h3>
+            <p data-i18n="method.s1p">Objetivo, oferta, público e o que precisa estar na primeira dobra. Sem reunião eterna.</p>
+          </article>
+          <article class="method-item reveal reveal-delay-1">
+            <strong>02</strong>
+            <h3 data-i18n="method.s2t">Preview vivo</h3>
+            <p data-i18n="method.s2p">Sua página sobe numa pasta do meu site. Você e o cliente abrem no celular, comentam e ajustam.</p>
+          </article>
+          <article class="method-item reveal reveal-delay-2">
+            <strong>03</strong>
+            <h3 data-i18n="method.s3t">Domínio próprio</h3>
+            <p data-i18n="method.s3p">Aprovado? Compramos o domínio no nome dele, configuramos a Hostinger e migramos tudo limpo.</p>
+          </article>
+        </div>
+
+        <div class="offer reveal">
+          <div>
+            <p class="section-kicker" data-i18n="offer.kicker">Fluxo de teste</p>
+            <h3 style="font-family:Syne,sans-serif;font-size:1.45rem;margin:0 0 8px;letter-spacing:-0.02em" data-i18n="offer.title">Prévia no meu endereço</h3>
+            <p style="margin:0;color:var(--mist)" data-i18n="offer.text">Enquanto o cliente testa, a página vive aqui — sem gastar domínio ainda.</p>
+            <code>davibelodesign.com/clientes/nome-do-cliente/</code>
           </div>
-        </div>
-        <aside class="hero-aside">
-          <p>Uma página boa se entende em três segundos. O resto é conversa.</p>
-          <small>Davi Belo · design</small>
-        </aside>
-      </div>
-
-      <div class="wrap" style="padding-top:72px">
-        <div class="section-head">
-          <h2>Como o trabalho anda</h2>
-          <p>Esqueleto simples de propósito: você vê o caminho inteiro antes de contratar o resto.</p>
-        </div>
-        <div class="steps">
-          <article class="step">
-            <span>01</span>
-            <h3>Briefing</h3>
-            <p>Objetivo, público e o que precisa estar na primeira dobra. Sem reunião eterna.</p>
-          </article>
-          <article class="step">
-            <span>02</span>
-            <h3>Página</h3>
-            <p>Layout no ar (subdomínio ou pasta de preview) pra você e o cliente aprovarem.</p>
-          </article>
-          <article class="step">
-            <span>03</span>
-            <h3>Publicar</h3>
-            <p>Domínio do cliente, Hostingator, formulário e o que mais a página pedir.</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="wrap about" style="padding:72px 0">
-        <h2>Quem faz</h2>
-        <div>
-          <p>A Davi Belo Design nasceu pra montar sites de verdade: rápidos de publicar, fáceis de explicar e prontos pra vender. Primeiro a página do estúdio. Depois as páginas dos clientes, cada uma no próprio endereço.</p>
-          <p>Este HTML é o esqueleto — home, projetos e contato num arquivo só. O resto entra conforme o portfólio crescer.</p>
+          <div>
+            <a class="btn primary hot" href="#contato">
+              <span class="shine" aria-hidden="true"></span>
+              <span data-i18n="offer.cta">Começar um preview</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="projetos">
+    <section id="trabalhos">
       <div class="wrap">
-        <div class="page-hero">
-          <p class="kicker">Portfólio</p>
-          <h1>Projetos no ar e em construção.</h1>
-          <p class="lede">Alguns já existem. Os outros marcam o tipo de trabalho que este estúdio quer fazer.</p>
-        </div>
-        <div class="filters">
-          <button type="button" class="is-on" data-filter="todos">Todos</button>
-          <button type="button" data-filter="institucional">Institucional</button>
-          <button type="button" data-filter="landing">Landing</button>
-          <button type="button" data-filter="cliente">Cliente</button>
-        </div>
-        <div class="projects">
-          <article class="project" data-cat="institucional">
-            <div class="thumb t1"></div>
+        <p class="section-kicker reveal" data-i18n="work.kicker">Portfólio em órbita</p>
+        <h2 class="reveal reveal-delay-1" data-i18n="work.title">Páginas pensadas para converter.</h2>
+        <p class="section-lead reveal reveal-delay-2" data-i18n="work.lead">
+          Começando o estúdio com foco em confecções e ofertas de venda. Cada projeto novo entra nesta órbita.
+        </p>
+
+        <div class="work-list">
+          <article class="work-row reveal hot">
+            <div class="work-thumb w1" aria-hidden="true"></div>
             <div>
-              <p class="tag">Institucional</p>
-              <h3>Brasil Tour &amp; Business</h3>
-              <p>Site de turismo corporativo. Peça-chave do portfólio — entra o link quando o domínio estiver no ar.</p>
+              <h3 data-i18n="work.w1t">Davi Belo Design</h3>
+              <p data-i18n="work.w1p">Esta página — o cartão de visitas do estúdio, PT/EN, globo 3D e método de preview.</p>
             </div>
-            <span>01</span>
+            <span class="work-tag" data-i18n="work.w1tag">Estúdio</span>
           </article>
-          <article class="project" data-cat="landing">
-            <div class="thumb t2"></div>
+          <article class="work-row reveal reveal-delay-1 hot">
+            <div class="work-thumb w2" aria-hidden="true"></div>
             <div>
-              <p class="tag">Landing</p>
-              <h3>Oferta única</h3>
-              <p>Página de captação: headline, prova, formulário. Placeholder até o primeiro cliente deste tipo.</p>
+              <h3 data-i18n="work.w2t">Landing de oferta</h3>
+              <p data-i18n="work.w2p">Headline, prova, CTA e WhatsApp. O formato que mais vende para campanhas curtas.</p>
             </div>
-            <span>02</span>
+            <span class="work-tag" data-i18n="work.w2tag">Conversão</span>
           </article>
-          <article class="project" data-cat="cliente">
-            <div class="thumb t3"></div>
+          <article class="work-row reveal reveal-delay-2 hot">
+            <div class="work-thumb w3" aria-hidden="true"></div>
             <div>
-              <p class="tag">Cliente</p>
-              <h3>Preview em subdomínio</h3>
-              <p>cliente.davibelodesign.com — o cliente vê, comenta, aprova. Domínio próprio só depois.</p>
+              <h3 data-i18n="work.w3t">Preview do cliente</h3>
+              <p data-i18n="work.w3p">Pasta no meu domínio para teste. Quando aprovar, migra para o servidor dele.</p>
             </div>
-            <span>03</span>
+            <span class="work-tag" data-i18n="work.w3tag">Cliente</span>
           </article>
-          <article class="project" data-cat="institucional">
-            <div class="thumb t4"></div>
-            <div>
-              <p class="tag">Institucional</p>
-              <h3>Estúdio / serviço local</h3>
-              <p>Quem é, o que faz, como chamar. Estrutura pronta pra clínicas, escritórios e lojas.</p>
-            </div>
-            <span>04</span>
-          </article>
-          <article class="project" data-cat="landing">
-            <div class="thumb t5"></div>
-            <div>
-              <p class="tag">Landing</p>
-              <h3>Lançamento</h3>
-              <p>Contagem, lista de espera, WhatsApp. Encaixe típico de campanha curta.</p>
-            </div>
-            <span>05</span>
-          </article>
-          <article class="project" data-cat="cliente">
-            <div class="thumb t6"></div>
-            <div>
-              <p class="tag">Cliente</p>
-              <h3>Esta página</h3>
-              <p>O próprio site da Davi Belo Design: home, projetos e contato neste HTML.</p>
-            </div>
-            <span>06</span>
-          </article>
-        </div>
-        <div class="actions" style="padding: 48px 0 0">
-          <a class="btn" href="#contato">Quero uma página assim</a>
         </div>
       </div>
     </section>
 
     <section id="contato">
       <div class="wrap">
-        <div class="page-hero">
-          <p class="kicker">Contato</p>
-          <h1>Conte o que a página precisa fazer.</h1>
-        </div>
-        <div class="contact-grid">
-          <aside class="contact-card">
-            <p class="kicker" style="color:#e7b39a">Direto</p>
-            <h2 style="color:var(--paper)">E-mail e WhatsApp</h2>
-            <p>O formulário abre o seu e-mail. No Hostingator dá pra trocar por PHP sem mudar o layout.</p>
-            <p><a id="email-link" href="mailto:contato@davibelodesign.com">contato@davibelodesign.com</a></p>
-            <p><a class="btn" id="wa-link" href="#" hidden>Chamar no WhatsApp</a></p>
+        <p class="section-kicker reveal" data-i18n="contact.kicker">Contato</p>
+        <h2 class="reveal reveal-delay-1" data-i18n="contact.title">Me conta o que a página precisa vender.</h2>
+        <div class="contact-shell">
+          <aside class="contact-panel reveal">
+            <div>
+              <p class="section-kicker" data-i18n="contact.direct">Direto</p>
+              <h3 data-i18n="contact.panelTitle">Vamos colocar sua oferta no ar.</h3>
+              <p data-i18n="contact.panelText">O formulário abre seu e-mail. No Hostinger dá para trocar por PHP depois, sem mudar o visual.</p>
+              <a class="mail hot" id="email-link" href="mailto:contato@davibelodesign.com">contato@davibelodesign.com</a>
+            </div>
+            <a class="btn ghost hot" id="wa-link" href="#" hidden data-i18n="contact.wa">Chamar no WhatsApp</a>
           </aside>
-          <form id="contato-form">
-            <label>Nome <input name="nome" type="text" required autocomplete="name" /></label>
-            <label>E-mail <input name="email" type="email" required autocomplete="email" /></label>
-            <label>WhatsApp <input name="fone" type="tel" autocomplete="tel" placeholder="11 9xxxx-xxxx" /></label>
-            <label>O que você precisa
+          <form id="contato-form" class="reveal reveal-delay-1">
+            <label><span data-i18n="form.name">Nome</span><input name="nome" type="text" required autocomplete="name" /></label>
+            <label><span data-i18n="form.email">E-mail</span><input name="email" type="email" required autocomplete="email" /></label>
+            <label><span data-i18n="form.phone">WhatsApp</span><input name="fone" type="tel" autocomplete="tel" placeholder="11 9xxxx-xxxx" /></label>
+            <label><span data-i18n="form.type">O que você precisa</span>
               <select name="tipo">
-                <option value="landing">Landing page</option>
-                <option value="institucional">Site institucional</option>
-                <option value="cliente">Página de cliente / preview</option>
-                <option value="outro">Ainda não sei</option>
+                <option value="landing" data-i18n="form.opt1">Landing page</option>
+                <option value="institucional" data-i18n="form.opt2">Site institucional</option>
+                <option value="preview" data-i18n="form.opt3">Preview no meu domínio</option>
+                <option value="outro" data-i18n="form.opt4">Ainda não sei</option>
               </select>
             </label>
-            <label>Mensagem
-              <textarea name="mensagem" required placeholder="Prazo, referência, o que a página tem que vender."></textarea>
+            <label><span data-i18n="form.message">Mensagem</span>
+              <textarea name="mensagem" required data-i18n-placeholder="form.ph" placeholder="Prazo, produto, o que a página tem que vender."></textarea>
             </label>
-            <button class="btn" type="submit">Enviar</button>
-            <p class="form-note">Troque o e-mail e o WhatsApp no script no final deste HTML (variável DBD).</p>
-            <div class="toast">Se o e-mail não abriu, copie a mensagem e mande para o endereço ao lado.</div>
+            <button class="btn primary hot" type="submit">
+              <span class="shine" aria-hidden="true"></span>
+              <span data-i18n="form.send">Enviar</span>
+            </button>
+            <div class="toast" data-i18n="form.toast">Se o e-mail não abriu, copie a mensagem e mande para o endereço ao lado.</div>
           </form>
         </div>
       </div>
@@ -337,43 +685,428 @@
   <footer>
     <div class="wrap site-footer">
       <span>© <span id="y"></span> Davi Belo Design</span>
-      <span>Sites e páginas — do rascunho ao ar</span>
+      <span data-i18n="footer.tag">Páginas que vendem — do preview ao domínio próprio</span>
     </div>
   </footer>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+
+    const canvas = document.getElementById("globe-canvas");
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.set(0, 0.15, 3.35);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    // Atmosphere glow shell
+    const atmosGeo = new THREE.SphereGeometry(1.08, 64, 64);
+    const atmosMat = new THREE.ShaderMaterial({
+      transparent: true,
+      side: THREE.BackSide,
+      depthWrite: false,
+      uniforms: {
+        color1: { value: new THREE.Color("#7ef0d4") },
+        color2: { value: new THREE.Color("#f0c75e") }
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        uniform vec3 color1;
+        uniform vec3 color2;
+        void main() {
+          float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
+          vec3 col = mix(color1, color2, intensity);
+          gl_FragColor = vec4(col, intensity * 0.85);
+        }
+      `
+    });
+    root.add(new THREE.Mesh(atmosGeo, atmosMat));
+
+    // Core globe
+    const globeGeo = new THREE.SphereGeometry(1, 64, 64);
+    const globeMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color("#0d1824"),
+      metalness: 0.35,
+      roughness: 0.45,
+      emissive: new THREE.Color("#071018"),
+      emissiveIntensity: 0.4
+    });
+    const globe = new THREE.Mesh(globeGeo, globeMat);
+    root.add(globe);
+
+    // Wire latitude/longitude
+    const wire = new THREE.Mesh(
+      new THREE.SphereGeometry(1.002, 36, 24),
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color("#7ef0d4"),
+        wireframe: true,
+        transparent: true,
+        opacity: 0.16
+      })
+    );
+    root.add(wire);
+
+    // City lights / diamond points
+    const count = 1400;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const cA = new THREE.Color("#7ef0d4");
+    const cB = new THREE.Color("#f0c75e");
+    const cC = new THREE.Color("#ffffff");
+    for (let i = 0; i < count; i++) {
+      const phi = Math.acos(2 * Math.random() - 1);
+      const theta = Math.random() * Math.PI * 2;
+      // Bias toward bands (continents vibe)
+      const r = 1.01 + Math.random() * 0.01;
+      const x = r * Math.sin(phi) * Math.cos(theta);
+      const y = r * Math.cos(phi);
+      const z = r * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+      const mix = Math.random();
+      const col = mix > 0.82 ? cB : mix > 0.35 ? cA : cC;
+      colors[i * 3] = col.r;
+      colors[i * 3 + 1] = col.g;
+      colors[i * 3 + 2] = col.b;
+    }
+    const pointsGeo = new THREE.BufferGeometry();
+    pointsGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    pointsGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    const points = new THREE.Points(
+      pointsGeo,
+      new THREE.PointsMaterial({
+        size: 0.018,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.95,
+        sizeAttenuation: true,
+        depthWrite: false
+      })
+    );
+    root.add(points);
+
+    // Outer particle ring
+    const ringCount = 220;
+    const ringPos = new Float32Array(ringCount * 3);
+    for (let i = 0; i < ringCount; i++) {
+      const a = (i / ringCount) * Math.PI * 2;
+      const rr = 1.55 + Math.sin(i * 0.35) * 0.05;
+      ringPos[i * 3] = Math.cos(a) * rr;
+      ringPos[i * 3 + 1] = Math.sin(a * 2) * 0.08;
+      ringPos[i * 3 + 2] = Math.sin(a) * rr;
+    }
+    const ringGeo = new THREE.BufferGeometry();
+    ringGeo.setAttribute("position", new THREE.BufferAttribute(ringPos, 3));
+    const ring = new THREE.Points(
+      ringGeo,
+      new THREE.PointsMaterial({
+        color: new THREE.Color("#f0c75e"),
+        size: 0.022,
+        transparent: true,
+        opacity: 0.75,
+        depthWrite: false
+      })
+    );
+    ring.rotation.x = 0.55;
+    root.add(ring);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1.35);
+    light.position.set(4, 2, 3);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x7ef0d4, 0.35));
+    const warm = new THREE.PointLight(0xf0c75e, 1.2, 8);
+    warm.position.set(-2.5, 1.2, 2);
+    scene.add(warm);
+
+    // Place globe toward the right on desktop
+    root.position.set(0.85, 0.05, 0);
+
+    let mx = 0, my = 0, tx = 0, ty = 0;
+    window.addEventListener("pointermove", (e) => {
+      tx = (e.clientX / window.innerWidth) * 2 - 1;
+      ty = (e.clientY / window.innerHeight) * 2 - 1;
+    });
+
+    function resize() {
+      const w = canvas.clientWidth || window.innerWidth;
+      const h = canvas.clientHeight || window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      const mobile = w < 900;
+      root.position.set(mobile ? 0.15 : 0.95, mobile ? 0.35 : 0.05, 0);
+      camera.position.z = mobile ? 4.1 : 3.35;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const clock = new THREE.Clock();
+    (function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      mx += (tx - mx) * 0.04;
+      my += (ty - my) * 0.04;
+      globe.rotation.y = t * 0.12 + mx * 0.35;
+      wire.rotation.y = globe.rotation.y * 1.02;
+      points.rotation.y = globe.rotation.y;
+      globe.rotation.x = my * 0.18;
+      wire.rotation.x = globe.rotation.x;
+      points.rotation.x = globe.rotation.x;
+      ring.rotation.z = t * 0.08;
+      root.rotation.y = mx * 0.12;
+      root.rotation.x = my * 0.05;
+      renderer.render(scene, camera);
+    })();
+  </script>
 
   <script>
     const DBD = {
       email: "contato@davibelodesign.com",
       whatsapp: "" // só dígitos, ex: 5511999999999
     };
+
+    const I18N = {
+      pt: {
+        "nav.method": "Método",
+        "nav.work": "Trabalhos",
+        "nav.contact": "Contato",
+        "hero.line": "Landing pages e sites que vendem — do rascunho ao ar, com preview no meu domínio até você aprovar.",
+        "hero.cta1": "Quero minha página",
+        "hero.cta2": "Como funciona",
+        "hero.scroll": "scroll",
+        "method.kicker": "Método diamante",
+        "method.title": "Você vê antes. Paga o domínio depois.",
+        "method.lead": "Eu monto a página, hospedo um preview no davibelodesign e você testa com calma. Quando o layout fechar, a gente sobe no domínio e na hospedagem do cliente.",
+        "method.s1t": "Briefing rápido",
+        "method.s1p": "Objetivo, oferta, público e o que precisa estar na primeira dobra. Sem reunião eterna.",
+        "method.s2t": "Preview vivo",
+        "method.s2p": "Sua página sobe numa pasta do meu site. Você e o cliente abrem no celular, comentam e ajustam.",
+        "method.s3t": "Domínio próprio",
+        "method.s3p": "Aprovado? Compramos o domínio no nome dele, configuramos a Hostinger e migramos tudo limpo.",
+        "offer.kicker": "Fluxo de teste",
+        "offer.title": "Prévia no meu endereço",
+        "offer.text": "Enquanto o cliente testa, a página vive aqui — sem gastar domínio ainda.",
+        "offer.cta": "Começar um preview",
+        "work.kicker": "Portfólio em órbita",
+        "work.title": "Páginas pensadas para converter.",
+        "work.lead": "Começando o estúdio com foco em confecções e ofertas de venda. Cada projeto novo entra nesta órbita.",
+        "work.w1t": "Davi Belo Design",
+        "work.w1p": "Esta página — o cartão de visitas do estúdio, PT/EN, globo 3D e método de preview.",
+        "work.w1tag": "Estúdio",
+        "work.w2t": "Landing de oferta",
+        "work.w2p": "Headline, prova, CTA e WhatsApp. O formato que mais vende para campanhas curtas.",
+        "work.w2tag": "Conversão",
+        "work.w3t": "Preview do cliente",
+        "work.w3p": "Pasta no meu domínio para teste. Quando aprovar, migra para o servidor dele.",
+        "work.w3tag": "Cliente",
+        "contact.kicker": "Contato",
+        "contact.title": "Me conta o que a página precisa vender.",
+        "contact.direct": "Direto",
+        "contact.panelTitle": "Vamos colocar sua oferta no ar.",
+        "contact.panelText": "O formulário abre seu e-mail. No Hostinger dá para trocar por PHP depois, sem mudar o visual.",
+        "contact.wa": "Chamar no WhatsApp",
+        "form.name": "Nome",
+        "form.email": "E-mail",
+        "form.phone": "WhatsApp",
+        "form.type": "O que você precisa",
+        "form.opt1": "Landing page",
+        "form.opt2": "Site institucional",
+        "form.opt3": "Preview no meu domínio",
+        "form.opt4": "Ainda não sei",
+        "form.message": "Mensagem",
+        "form.ph": "Prazo, produto, o que a página tem que vender.",
+        "form.send": "Enviar",
+        "form.toast": "Se o e-mail não abriu, copie a mensagem e mande para o endereço ao lado.",
+        "footer.tag": "Páginas que vendem — do preview ao domínio próprio",
+        "doc.title": "Davi Belo Design — páginas que vendem",
+        "doc.desc": "Estúdio de landing pages e sites de conversão. Preview no meu domínio. Quando aprovar, o site vai para o seu."
+      },
+      en: {
+        "nav.method": "Method",
+        "nav.work": "Work",
+        "nav.contact": "Contact",
+        "hero.line": "Landing pages and sites that sell — from sketch to live, with a preview on my domain until you approve.",
+        "hero.cta1": "I want my page",
+        "hero.cta2": "How it works",
+        "hero.scroll": "scroll",
+        "method.kicker": "Diamond method",
+        "method.title": "You see it first. Domain comes later.",
+        "method.lead": "I build the page, host a preview on davibelodesign, and you test calmly. When the layout is locked, we launch on the client’s domain and hosting.",
+        "method.s1t": "Fast briefing",
+        "method.s1p": "Goal, offer, audience, and what must live above the fold. No endless meetings.",
+        "method.s2t": "Live preview",
+        "method.s2p": "Your page goes live in a folder on my site. You and the client open it on mobile, comment, and refine.",
+        "method.s3t": "Own domain",
+        "method.s3p": "Approved? We buy the domain in their name, set up Hostinger, and migrate everything clean.",
+        "offer.kicker": "Test flow",
+        "offer.title": "Preview on my address",
+        "offer.text": "While the client tests, the page lives here — no domain spend yet.",
+        "offer.cta": "Start a preview",
+        "work.kicker": "Portfolio in orbit",
+        "work.title": "Pages built to convert.",
+        "work.lead": "Starting the studio focused on apparel and sales offers. Every new project joins this orbit.",
+        "work.w1t": "Davi Belo Design",
+        "work.w1p": "This page — the studio’s calling card, PT/EN, 3D globe, and preview method.",
+        "work.w1tag": "Studio",
+        "work.w2t": "Offer landing",
+        "work.w2p": "Headline, proof, CTA, and WhatsApp. The format that sells for short campaigns.",
+        "work.w2tag": "Conversion",
+        "work.w3t": "Client preview",
+        "work.w3p": "A folder on my domain for testing. Once approved, it moves to their server.",
+        "work.w3tag": "Client",
+        "contact.kicker": "Contact",
+        "contact.title": "Tell me what the page needs to sell.",
+        "contact.direct": "Direct",
+        "contact.panelTitle": "Let’s put your offer live.",
+        "contact.panelText": "The form opens your email. On Hostinger you can later switch to PHP without changing the look.",
+        "contact.wa": "Call on WhatsApp",
+        "form.name": "Name",
+        "form.email": "Email",
+        "form.phone": "WhatsApp",
+        "form.type": "What you need",
+        "form.opt1": "Landing page",
+        "form.opt2": "Business site",
+        "form.opt3": "Preview on my domain",
+        "form.opt4": "Not sure yet",
+        "form.message": "Message",
+        "form.ph": "Deadline, product, what the page must sell.",
+        "form.send": "Send",
+        "form.toast": "If email did not open, copy the message and send it to the address on the left.",
+        "footer.tag": "Pages that sell — from preview to your own domain",
+        "doc.title": "Davi Belo Design — pages that sell",
+        "doc.desc": "Landing pages and conversion sites studio. Preview on my domain. When approved, it goes to yours."
+      }
+    };
+
+    let lang = localStorage.getItem("dbd-lang") || "pt";
+
+    function applyLang(next) {
+      lang = next;
+      localStorage.setItem("dbd-lang", lang);
+      document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+      const dict = I18N[lang];
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (dict[key]) el.setAttribute("placeholder", dict[key]);
+      });
+      document.title = dict["doc.title"];
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", dict["doc.desc"]);
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        const on = btn.dataset.lang === lang;
+        btn.classList.toggle("is-on", on);
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+    }
+
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+    });
+    applyLang(lang);
+
     document.getElementById("y").textContent = new Date().getFullYear();
     document.querySelector(".nav-toggle").onclick = () => document.body.classList.toggle("nav-open");
-    document.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", () => document.body.classList.remove("nav-open")));
-    const el = document.getElementById("email-link");
-    el.textContent = DBD.email;
-    el.href = "mailto:" + DBD.email;
+    document.querySelectorAll(".nav a").forEach((a) =>
+      a.addEventListener("click", () => document.body.classList.remove("nav-open"))
+    );
+
+    const email = document.getElementById("email-link");
+    email.textContent = DBD.email;
+    email.href = "mailto:" + DBD.email;
     const wa = document.getElementById("wa-link");
     if (DBD.whatsapp) {
       wa.hidden = false;
       wa.href = "https://wa.me/" + DBD.whatsapp + "?text=" + encodeURIComponent("Olá, quero um site com a Davi Belo Design.");
     }
-    document.querySelectorAll("[data-filter]").forEach((btn) => {
-      btn.onclick = () => {
-        document.querySelectorAll("[data-filter]").forEach((b) => b.classList.remove("is-on"));
-        btn.classList.add("is-on");
-        const f = btn.dataset.filter;
-        document.querySelectorAll("[data-cat]").forEach((card) => {
-          card.style.display = f === "todos" || card.dataset.cat === f ? "" : "none";
-        });
-      };
-    });
+
     document.getElementById("contato-form").onsubmit = (e) => {
       e.preventDefault();
       const d = Object.fromEntries(new FormData(e.target));
-      const body = "Nome: " + d.nome + "%0AEmail: " + d.email + "%0AWhatsApp: " + d.fone + "%0ATipo: " + d.tipo + "%0A%0A" + d.mensagem;
-      window.location.href = "mailto:" + DBD.email + "?subject=" + encodeURIComponent("Novo projeto — " + d.nome) + "&body=" + body;
+      const body =
+        "Nome: " + d.nome +
+        "%0AEmail: " + d.email +
+        "%0AWhatsApp: " + d.fone +
+        "%0ATipo: " + d.tipo +
+        "%0A%0A" + d.mensagem;
+      window.location.href =
+        "mailto:" + DBD.email +
+        "?subject=" + encodeURIComponent("Novo projeto — " + d.nome) +
+        "&body=" + body;
       document.querySelector(".toast").classList.add("show");
     };
+
+    // Header scroll
+    const header = document.getElementById("header");
+    const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((en) => { if (en.isIntersecting) en.target.classList.add("in"); }),
+      { threshold: 0.16 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    // Hero reveals immediately
+    requestAnimationFrame(() => document.querySelectorAll(".hero .reveal").forEach((el) => el.classList.add("in")));
+
+    // Custom cursor
+    const isTouch = matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+    if (isTouch) {
+      document.body.classList.add("touch");
+    } else {
+      const cur = document.getElementById("cursor");
+      const dot = document.getElementById("cursor-dot");
+      let x = 0, y = 0, dx = 0, dy = 0;
+      window.addEventListener("pointermove", (e) => { x = e.clientX; y = e.clientY; });
+      (function loop() {
+        dx += (x - dx) * 0.18;
+        dy += (y - dy) * 0.18;
+        cur.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%)`;
+        dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        requestAnimationFrame(loop);
+      })();
+      document.querySelectorAll(".hot").forEach((el) => {
+        el.addEventListener("pointerenter", () => cur.classList.add("is-hot"));
+        el.addEventListener("pointerleave", () => cur.classList.remove("is-hot"));
+      });
+    }
+
+    // Sparkles
+    const layer = document.getElementById("sparkles");
+    for (let i = 0; i < 28; i++) {
+      const s = document.createElement("span");
+      s.className = "sparkle";
+      s.style.left = Math.random() * 100 + "%";
+      s.style.top = Math.random() * 100 + "%";
+      s.style.setProperty("--d", 2.4 + Math.random() * 3.5 + "s");
+      s.style.animationDelay = Math.random() * 4 + "s";
+      layer.appendChild(s);
+    }
   </script>
 </body>
 </html>
