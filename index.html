@@ -137,6 +137,14 @@
     .flag { width: 18px; height: 12px; border-radius: 2px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,0.15); flex-shrink: 0; }
     .flag svg { width: 100%; height: 100%; display: block; }
 
+    .header-tools { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .header-inner .nav { margin-left: 0; }
+    @media (min-width: 901px) {
+      .header-tools { order: 3; margin-left: 0; }
+      .nav { order: 2; margin-left: auto; }
+      .brand { order: 1; }
+      .header-inner { display: flex; }
+    }
     .nav-toggle {
       display: none; width: 44px; height: 44px; border-radius: 10px;
       border: 1px solid var(--line); background: rgba(255,255,255,0.03);
@@ -486,7 +494,6 @@
         border-bottom: 1px solid var(--line);
       }
       body.nav-open .nav { display: flex; }
-      .lang-switch { margin-left: auto; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -509,11 +516,7 @@
   <header class="site-header" id="header">
     <div class="header-inner">
       <a class="brand hot" href="#topo">davi belo <span>design</span></a>
-      <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
-      <nav class="nav" id="nav">
-        <a class="hot" href="#metodo" data-i18n="nav.method">Método</a>
-        <a class="hot" href="#trabalhos" data-i18n="nav.work">Trabalhos</a>
-        <a class="hot" href="#contato" data-i18n="nav.contact">Contato</a>
+      <div class="header-tools">
         <div class="lang-switch" role="group" aria-label="Language">
           <button type="button" class="lang-btn is-on hot" data-lang="pt" aria-pressed="true">
             <span class="flag" aria-hidden="true">
@@ -528,6 +531,12 @@
             EN
           </button>
         </div>
+        <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
+      </div>
+      <nav class="nav" id="nav">
+        <a class="hot" href="#metodo" data-i18n="nav.method">Método</a>
+        <a class="hot" href="#trabalhos" data-i18n="nav.work">Trabalhos</a>
+        <a class="hot" href="#contato" data-i18n="nav.contact">Contato</a>
       </nav>
     </div>
   </header>
