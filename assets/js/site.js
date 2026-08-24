@@ -2,14 +2,24 @@
   const content = window.DBD_CONTENT || {};
   let lang = localStorage.getItem("dbd_lang") || "pt";
 
-  const get = (path) =>
-    path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), content);
+  const get = (obj, path) =>
+    path.split(".").reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
 
   const t = (path) => {
-    const node = get(path);
-    if (node && typeof node === "object" && (lang in node)) return node[lang];
-    if (typeof node === "string") return node;
-    return "";
+    const parts = path.split(".");
+    const section = content[parts[0]];
+    if (section == null) return "";
+
+    // Localized blocks: { pt: {...|string}, en: {...|string} }
+    if (typeof section === "object" && (section.pt != null || section.en != null)) {
+      const bag = section[lang] ?? section.pt;
+      if (parts.length === 1) return typeof bag === "string" ? bag : "";
+      const value = get(bag, parts.slice(1).join("."));
+      return value == null ? "" : String(value);
+    }
+
+    const value = parts.length === 1 ? section : get(section, parts.slice(1).join("."));
+    return value == null ? "" : String(value);
   };
 
   function applyI18n() {
