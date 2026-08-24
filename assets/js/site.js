@@ -141,10 +141,15 @@
     applyI18n();
   });
 
-  /* Preloader */
-  window.addEventListener("load", () => {
-    setTimeout(() => document.getElementById("loader")?.classList.add("hide"), 1800);
-  });
+  /* Preloader — never stay stuck */
+  const hideLoader = () => {
+    const el = document.getElementById("loader");
+    if (!el || el.classList.contains("hide")) return;
+    el.classList.add("hide");
+    setTimeout(() => el.classList.add("gone"), 600);
+  };
+  window.addEventListener("load", () => setTimeout(hideLoader, 500));
+  setTimeout(hideLoader, 1800);
 
   /* Cursor */
   const cursor = document.getElementById("cursor");
@@ -223,21 +228,6 @@
       { threshold: 0.12 }
     );
     document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
-  }
-
-  /* GSAP — light motion only (never hide text permanently) */
-  if (window.gsap) {
-    const titleSpans = document.querySelectorAll(".hero-title span");
-    gsap.set(titleSpans, { opacity: 1, y: 0 });
-    gsap.from(titleSpans, {
-      y: 36,
-      opacity: 0,
-      stagger: 0.1,
-      duration: 0.9,
-      ease: "power3.out",
-      delay: 1.9,
-      onComplete: () => gsap.set(titleSpans, { clearProps: "transform,opacity" }),
-    });
   }
 
   /* Three.js — interactive Earth globe (hero only) */

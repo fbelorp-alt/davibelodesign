@@ -25,9 +25,15 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   position: fixed; inset: 0; z-index: 99999;
   background: #020307;
   display: grid; place-items: center;
-  transition: opacity .9s, visibility .9s;
+  transition: opacity .55s ease;
 }
-.loader.hide { opacity: 0; visibility: hidden; }
+.loader.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+.loader.gone {
+  display: none !important;
+}
 .loader-logo {
   font-family: var(--display);
   font-size: 18px; font-weight: 800; letter-spacing: -1px; text-align: center;
@@ -39,7 +45,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .loader-progress {
   height: 100%; width: 0;
   background: linear-gradient(90deg, var(--blue), var(--cyan));
-  animation: load 2s ease forwards;
+  animation: load 1.6s ease forwards;
 }
 @keyframes load { to { width: 100%; } }
 
@@ -153,15 +159,13 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
 }
 .hero-copy {
   position: relative;
-  z-index: 5;
+  z-index: 6;
   max-width: 560px;
+  color: var(--text);
+  text-shadow: 0 2px 28px rgba(0,0,0,.55);
 }
 @media (min-width: 981px) {
-  .hero-copy { max-width: min(560px, 48vw); }
-}
-.hero-title span {
-  display: inline-block;
-  opacity: 1;
+  .hero-copy { max-width: min(560px, 46vw); }
 }
 .eyebrow {
   display: flex; align-items: center; gap: 12px;
