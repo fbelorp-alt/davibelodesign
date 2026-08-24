@@ -151,7 +151,18 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
   overflow: hidden;
   isolation: isolate;
 }
-.hero-copy { position: relative; z-index: 3; max-width: 920px; }
+.hero-copy {
+  position: relative;
+  z-index: 5;
+  max-width: 560px;
+}
+@media (min-width: 981px) {
+  .hero-copy { max-width: min(560px, 48vw); }
+}
+.hero-title span {
+  display: inline-block;
+  opacity: 1;
+}
 .eyebrow {
   display: flex; align-items: center; gap: 12px;
   color: #778196; text-transform: uppercase; letter-spacing: 4px; font-size: 9px; margin-bottom: 28px;

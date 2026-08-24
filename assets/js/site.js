@@ -225,24 +225,19 @@
     document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
   }
 
-  /* GSAP — safe hero entrance after loader */
+  /* GSAP — light motion only (never hide text permanently) */
   if (window.gsap) {
-    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     const titleSpans = document.querySelectorAll(".hero-title span");
-    gsap.set(titleSpans, { clearProps: "all" });
-    gsap.fromTo(
-      titleSpans,
-      { y: 48, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.95,
-        ease: "power3.out",
-        delay: 1.85,
-        overwrite: true,
-      }
-    );
+    gsap.set(titleSpans, { opacity: 1, y: 0 });
+    gsap.from(titleSpans, {
+      y: 36,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.9,
+      ease: "power3.out",
+      delay: 1.9,
+      onComplete: () => gsap.set(titleSpans, { clearProps: "transform,opacity" }),
+    });
   }
 
   /* Three.js — interactive Earth globe (hero only) */
@@ -257,6 +252,7 @@
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
@@ -408,9 +404,9 @@
       renderer.setSize(w, h, false);
 
       const mobile = window.innerWidth < 900;
-      globeGroup.scale.setScalar(mobile ? 0.85 : 1.05);
-      globeGroup.position.set(mobile ? 0.15 : 1.85, mobile ? 0.1 : 0, 0);
-      camera.position.z = mobile ? 5.6 : 5.8;
+      globeGroup.scale.setScalar(mobile ? 0.8 : 1.0);
+      globeGroup.position.set(mobile ? 0.35 : 2.15, mobile ? 0.2 : 0.05, 0);
+      camera.position.z = mobile ? 5.8 : 5.9;
     };
 
     window.addEventListener("resize", resize);
