@@ -75,17 +75,17 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
 .orb {
-  position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: -2;
-  opacity: .35; mix-blend-mode: screen;
+  position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: -2;
+  opacity: .22; mix-blend-mode: screen;
 }
 .orb-a {
-  width: 420px; height: 420px; top: 10%; right: 8%;
-  background: radial-gradient(circle, rgba(61,124,255,.7), transparent 70%);
+  width: 380px; height: 380px; top: 12%; right: 4%;
+  background: radial-gradient(circle, rgba(80,160,255,.55), transparent 70%);
   animation: floatA 12s ease-in-out infinite;
 }
 .orb-b {
-  width: 340px; height: 340px; bottom: 15%; left: 5%;
-  background: radial-gradient(circle, rgba(0,217,255,.45), transparent 70%);
+  width: 300px; height: 300px; bottom: 18%; left: 4%;
+  background: radial-gradient(circle, rgba(0,217,255,.28), transparent 70%);
   animation: floatB 16s ease-in-out infinite;
 }
 @keyframes floatA {
@@ -179,18 +179,7 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
 }
 
 .floating-label {
-  position: absolute; z-index: 4;
-  border: 1px solid rgba(255,255,255,.1);
-  background: rgba(5,8,15,.55);
-  backdrop-filter: blur(12px);
-  padding: 12px 15px; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: #8893a8;
-  border-radius: 12px;
-}
-.label-1 { right: 14%; top: 27%; }
-.label-2 { right: 7%; bottom: 23%; }
-.dot {
-  display: inline-block; width: 5px; height: 5px; border-radius: 50%;
-  background: #3cffae; margin-right: 7px; box-shadow: 0 0 12px #3cffae;
+  display: none;
 }
 
 .marquee {

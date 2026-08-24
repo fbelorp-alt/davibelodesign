@@ -248,114 +248,175 @@
     });
   }
 
-  /* Three.js scene */
+  /* Three.js — interactive Earth globe */
   function initThree() {
     const canvas = document.getElementById("webgl");
     if (!canvas || !window.THREE) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.z = 7;
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 6.2);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
 
-    const object = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.65, 3),
-      new THREE.MeshPhysicalMaterial({
-        color: 0x164cff,
-        metalness: 0.85,
-        roughness: 0.14,
-        transmission: 0.18,
+    const globeGroup = new THREE.Group();
+    scene.add(globeGroup);
+
+    const loader = new THREE.TextureLoader();
+    const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+    const dayMap = loader.load("/assets/img/earth/earth_day.jpg");
+    const cloudsMap = loader.load("/assets/img/earth/earth_clouds.png");
+    const normalMap = loader.load("/assets/img/earth/earth_normal.jpg");
+    const specularMap = loader.load("/assets/img/earth/earth_specular.jpg");
+
+    [dayMap, cloudsMap, normalMap, specularMap].forEach((tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = maxAniso;
+    });
+    normalMap.colorSpace = THREE.NoColorSpace;
+    specularMap.colorSpace = THREE.NoColorSpace;
+
+    const earthGeo = new THREE.SphereGeometry(1.55, 64, 64);
+    const earthMat = new THREE.MeshPhongMaterial({
+      map: dayMap,
+      normalMap,
+      normalScale: new THREE.Vector2(0.85, 0.85),
+      specularMap,
+      specular: new THREE.Color(0x333333),
+      shininess: 18,
+    });
+    const earth = new THREE.Mesh(earthGeo, earthMat);
+    globeGroup.add(earth);
+
+    const clouds = new THREE.Mesh(
+      new THREE.SphereGeometry(1.575, 64, 64),
+      new THREE.MeshPhongMaterial({
+        map: cloudsMap,
         transparent: true,
-        opacity: 0.9,
-        clearcoat: 1,
-        clearcoatRoughness: 0.08,
+        opacity: 0.42,
+        depthWrite: false,
       })
     );
-    scene.add(object);
+    globeGroup.add(clouds);
 
-    const wire = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1.82, 2),
-      new THREE.MeshBasicMaterial({
-        color: 0x4d8dff,
-        wireframe: true,
+    const atmosphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.68, 64, 64),
+      new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
+            gl_FragColor = vec4(0.25, 0.65, 1.0, 1.0) * intensity;
+          }
+        `,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
         transparent: true,
-        opacity: 0.18,
+        depthWrite: false,
       })
     );
-    scene.add(wire);
+    globeGroup.add(atmosphere);
 
-    const ringGeo = new THREE.TorusGeometry(2.35, 0.015, 16, 180);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x66a0ff, transparent: true, opacity: 0.35 });
-    const ring1 = new THREE.Mesh(ringGeo, ringMat);
-    const ring2 = new THREE.Mesh(ringGeo, ringMat.clone());
-    ring2.rotation.x = Math.PI / 2.4;
-    scene.add(ring1, ring2);
-
-    const particleCount = 1100;
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 16;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    const starCount = 1400;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      starPos[i * 3] = (Math.random() - 0.5) * 40;
+      starPos[i * 3 + 1] = (Math.random() - 0.5) * 24;
+      starPos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 6;
     }
-    const particleGeometry = new THREE.BufferGeometry();
-    particleGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const particles = new THREE.Points(
-      particleGeometry,
-      new THREE.PointsMaterial({ color: 0x5b91ff, size: 0.016, transparent: true, opacity: 0.7 })
+    const starsGeo = new THREE.BufferGeometry();
+    starsGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    const stars = new THREE.Points(
+      starsGeo,
+      new THREE.PointsMaterial({ color: 0xb8d4ff, size: 0.018, transparent: true, opacity: 0.75 })
     );
-    scene.add(particles);
+    scene.add(stars);
 
-    const light1 = new THREE.PointLight(0x377dff, 28, 16);
-    light1.position.set(4, 3, 5);
-    const light2 = new THREE.PointLight(0x00d9ff, 20, 14);
-    light2.position.set(-4, -2, 3);
-    scene.add(light1, light2, new THREE.AmbientLight(0x304060, 1));
+    const sun = new THREE.DirectionalLight(0xffffff, 2.1);
+    sun.position.set(5, 2.4, 3.5);
+    const rim = new THREE.DirectionalLight(0x4da3ff, 0.55);
+    rim.position.set(-4, -1, -2);
+    const ambient = new THREE.AmbientLight(0x1a2740, 0.55);
+    scene.add(sun, rim, ambient);
 
-    let targetX = 0, targetY = 0;
-    document.addEventListener("mousemove", (e) => {
-      targetX = e.clientX / window.innerWidth - 0.5;
-      targetY = e.clientY / window.innerHeight - 0.5;
+    let targetRotY = 0.35;
+    let targetRotX = 0.12;
+    let currentRotY = 0.35;
+    let currentRotX = 0.12;
+    let pointerActive = false;
+
+    const onPointerMove = (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      targetRotY = (x - 0.5) * Math.PI * 1.35;
+      targetRotX = (y - 0.5) * 0.75;
+      pointerActive = true;
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerleave", () => {
+      pointerActive = false;
     });
 
     const clock = new THREE.Clock();
     const animate = () => {
       requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
-      object.rotation.x = t * 0.16;
-      object.rotation.y = t * 0.24;
-      wire.rotation.x = -t * 0.08;
-      wire.rotation.y = -t * 0.14;
-      ring1.rotation.z = t * 0.2;
-      ring2.rotation.y = -t * 0.15;
-      particles.rotation.y = t * 0.01;
-      object.position.x += (targetX * 1.15 - object.position.x) * 0.025;
-      object.position.y += (-targetY * 0.85 - object.position.y) * 0.025;
-      wire.position.copy(object.position);
-      ring1.position.copy(object.position);
-      ring2.position.copy(object.position);
-      camera.position.x += (targetX * 0.28 - camera.position.x) * 0.02;
-      camera.position.y += (-targetY * 0.2 - camera.position.y) * 0.02;
-      camera.lookAt(0, 0, 0);
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const t = clock.elapsedTime;
+
+      if (!pointerActive) {
+        targetRotY += dt * 0.14;
+        targetRotX = THREE.MathUtils.lerp(targetRotX, Math.sin(t * 0.35) * 0.08, 0.02);
+      }
+
+      currentRotY += (targetRotY - currentRotY) * 0.045;
+      currentRotX += (targetRotX - currentRotX) * 0.045;
+      currentRotX = Math.max(-0.55, Math.min(0.55, currentRotX));
+
+      earth.rotation.y = currentRotY;
+      earth.rotation.x = currentRotX;
+      clouds.rotation.y = currentRotY * 1.08 + t * 0.02;
+      clouds.rotation.x = currentRotX;
+      atmosphere.rotation.copy(earth.rotation);
+
+      stars.rotation.y = t * 0.008;
+      camera.position.x += ((pointerActive ? (targetRotY * 0.15) : 0) - camera.position.x) * 0.03;
+      camera.position.y += ((pointerActive ? (-targetRotX * 0.2) : 0) - camera.position.y) * 0.03;
+      camera.lookAt(globeGroup.position);
+
       renderer.render(scene, camera);
     };
     animate();
+
+    const placeGlobe = () => {
+      const mobile = window.innerWidth < 900;
+      const scale = mobile ? 0.78 : 1.15;
+      globeGroup.scale.setScalar(scale);
+      globeGroup.position.set(mobile ? 0 : 2.35, mobile ? -0.15 : 0.05, 0);
+      camera.position.z = mobile ? 5.4 : 6.2;
+    };
 
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      const scale = window.innerWidth < 700 ? 0.7 : 1;
-      object.scale.setScalar(scale);
-      wire.scale.setScalar(scale);
-      ring1.scale.setScalar(scale);
-      ring2.scale.setScalar(scale);
+      placeGlobe();
     };
     window.addEventListener("resize", onResize);
-    onResize();
+    placeGlobe();
   }
 
   applyI18n();
