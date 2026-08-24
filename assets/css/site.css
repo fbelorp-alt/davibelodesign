@@ -48,44 +48,53 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   transform: translate(-50%, -50%); z-index: 99998;
 }
 .cursor {
-  width: 12px; height: 12px; background: #fff; mix-blend-mode: difference;
-  transition: width .25s, height .25s;
+  width: 8px; height: 8px; background: rgba(255,255,255,.85);
+  transition: width .25s, height .25s, opacity .25s;
+  opacity: .9;
 }
 .cursor-ring {
-  width: 42px; height: 42px; border: 1px solid rgba(255,255,255,.55); z-index: 99997;
+  width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.28); z-index: 99997;
   transition: width .3s, height .3s, border-color .3s;
 }
-.cursor.big { width: 64px; height: 64px; }
-.cursor-ring.big { width: 84px; height: 84px; border-color: rgba(61,124,255,.8); }
+.cursor.big { width: 42px; height: 42px; }
+.cursor-ring.big { width: 56px; height: 56px; border-color: rgba(61,124,255,.55); }
 
-#webgl {
-  position: fixed; inset: 0; width: 100%; height: 100%;
-  z-index: -4; pointer-events: none;
-}
 .noise {
-  position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: .04;
+  position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: .025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
 .grid-bg {
   position: fixed; inset: 0; z-index: -3; pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
   background-size: 80px 80px;
-  mask-image: linear-gradient(to bottom, black, transparent 78%);
+  mask-image: linear-gradient(to bottom, black, transparent 70%);
+}
+.hero-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity .45s ease;
+}
+#webgl {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block;
 }
 .orb {
-  position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: -2;
-  opacity: .22; mix-blend-mode: screen;
+  position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0;
+  opacity: .28; mix-blend-mode: screen;
 }
 .orb-a {
-  width: 380px; height: 380px; top: 12%; right: 4%;
-  background: radial-gradient(circle, rgba(80,160,255,.55), transparent 70%);
+  width: 340px; height: 340px; top: 8%; right: 6%;
+  background: radial-gradient(circle, rgba(80,160,255,.5), transparent 70%);
   animation: floatA 12s ease-in-out infinite;
 }
 .orb-b {
-  width: 300px; height: 300px; bottom: 18%; left: 4%;
-  background: radial-gradient(circle, rgba(0,217,255,.28), transparent 70%);
+  width: 260px; height: 260px; bottom: 12%; right: 28%;
+  background: radial-gradient(circle, rgba(0,217,255,.22), transparent 70%);
   animation: floatB 16s ease-in-out infinite;
 }
 @keyframes floatA {
@@ -139,6 +148,8 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
 .hero {
   min-height: 100vh; padding: 140px 7vw 80px;
   position: relative; display: flex; align-items: center;
+  overflow: hidden;
+  isolation: isolate;
 }
 .hero-copy { position: relative; z-index: 3; max-width: 920px; }
 .eyebrow {
@@ -148,8 +159,8 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
 .eyebrow::before { content: ""; width: 35px; height: 1px; background: var(--blue); }
 .hero-title {
   font-family: var(--display);
-  font-size: clamp(64px, 11vw, 168px);
-  line-height: .78; letter-spacing: -.08em; font-weight: 800;
+  font-size: clamp(52px, 9vw, 140px);
+  line-height: .82; letter-spacing: -.06em; font-weight: 800;
 }
 .hero-title .stroke {
   color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.42);
@@ -237,9 +248,21 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
   filter: saturate(1.1) contrast(1.05);
 }
 .project:hover .project-bg { transform: scale(1.1); }
-.project-a { background-image: radial-gradient(circle at 60% 40%, rgba(48,123,255,.85), transparent 22%), linear-gradient(135deg,#111a2e,#03050a 70%); }
-.project-b { background-image: radial-gradient(circle at 60% 35%, rgba(0,180,220,.7), transparent 22%), linear-gradient(135deg,#0b1a24,#050307 70%); }
-.project-c { background-image: radial-gradient(circle at 35% 40%, rgba(0,209,175,.55), transparent 22%), linear-gradient(135deg,#071e20,#030506 70%); }
+.project-a {
+  background:
+    radial-gradient(circle at 70% 35%, rgba(48,123,255,.35), transparent 28%),
+    linear-gradient(145deg, #121826 0%, #070a12 70%);
+}
+.project-b {
+  background:
+    radial-gradient(circle at 60% 40%, rgba(0,180,220,.28), transparent 28%),
+    linear-gradient(145deg, #101820 0%, #07090e 70%);
+}
+.project-c {
+  background:
+    radial-gradient(circle at 40% 40%, rgba(0,180,140,.25), transparent 28%),
+    linear-gradient(145deg, #0d1718 0%, #070a0c 70%);
+}
 .project-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(3,5,10,.92) 10%, transparent 55%);
@@ -279,7 +302,7 @@ html[data-lang="en"] .lang-switch span:last-child { color: #fff; font-weight: 70
   display: grid; grid-template-columns: 80px 1fr 140px; align-items: center;
   padding: 38px 0; border-bottom: 1px solid rgba(255,255,255,.08); transition: .4s;
 }
-.service:hover { padding-left: 22px; background: linear-gradient(90deg, rgba(61,124,255,.06), transparent); }
+.service:hover { padding-left: 18px; background: linear-gradient(90deg, rgba(61,124,255,.04), transparent); }
 .service-number { color: #4f5663; font-size: 10px; }
 .service-name {
   font-family: var(--display);
@@ -362,7 +385,6 @@ footer {
 @media (max-width: 980px) {
   .cursor, .cursor-ring { display: none; }
   .nav-links a:not(.nav-cta) { display: none; }
-  .floating-label { display: none; }
   .projects { grid-template-columns: 1fr; }
   .project, .project.small { min-height: 420px; }
   .process-grid { grid-template-columns: 1fr 1fr; }
@@ -370,6 +392,7 @@ footer {
   .hero-bottom, .cta-bottom, footer { flex-direction: column; align-items: flex-start; }
   .service { grid-template-columns: 50px 1fr; }
   .service-detail { display: none; }
+  .hero-stage { opacity: .55; }
 }
 
 @media (max-width: 600px) {

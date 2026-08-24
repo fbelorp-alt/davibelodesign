@@ -27,11 +27,8 @@ $site = $content['site'] ?? [];
     </div>
   </div>
 
-  <canvas id="webgl"></canvas>
   <div class="noise"></div>
   <div class="grid-bg"></div>
-  <div class="orb orb-a"></div>
-  <div class="orb orb-b"></div>
 
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
@@ -51,7 +48,12 @@ $site = $content['site'] ?? [];
     </div>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
+    <div class="hero-stage" aria-hidden="true">
+      <canvas id="webgl"></canvas>
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+    </div>
     <div class="hero-copy">
       <div class="eyebrow" data-i18n="hero.eyebrow">Estúdio Criativo Digital</div>
       <h1 class="hero-title">
@@ -67,8 +69,6 @@ $site = $content['site'] ?? [];
         </div>
       </div>
     </div>
-    <div class="floating-label label-1"><span class="dot"></span><span data-i18n="hero.label1"></span></div>
-    <div class="floating-label label-2" data-i18n="hero.label2"></div>
     <div class="scroll-indicator" data-i18n="hero.scroll">Role para explorar</div>
   </section>
 

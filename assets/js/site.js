@@ -225,44 +225,41 @@
     document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
   }
 
-  /* GSAP */
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from(".hero-title span", {
-      y: 80,
-      opacity: 0,
-      stagger: 0.12,
-      duration: 1.1,
-      ease: "power3.out",
-      delay: 1.7,
-    });
-    gsap.to(".orb-a", {
-      scrollTrigger: { scrub: true },
-      y: 180,
-      x: -80,
-    });
-    gsap.to(".orb-b", {
-      scrollTrigger: { scrub: true },
-      y: -120,
-      x: 60,
-    });
+  /* GSAP — safe hero entrance after loader */
+  if (window.gsap) {
+    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    const titleSpans = document.querySelectorAll(".hero-title span");
+    gsap.set(titleSpans, { clearProps: "all" });
+    gsap.fromTo(
+      titleSpans,
+      { y: 48, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+        duration: 0.95,
+        ease: "power3.out",
+        delay: 1.85,
+        overwrite: true,
+      }
+    );
   }
 
-  /* Three.js — interactive Earth globe */
+  /* Three.js — interactive Earth globe (hero only) */
   function initThree() {
     const canvas = document.getElementById("webgl");
-    if (!canvas || !window.THREE) return;
+    const stage = document.querySelector(".hero-stage") || document.getElementById("hero");
+    if (!canvas || !stage || !window.THREE) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(0, 0, 6.2);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.35;
 
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
@@ -275,23 +272,25 @@
     const normalMap = loader.load("/assets/img/earth/earth_normal.jpg");
     const specularMap = loader.load("/assets/img/earth/earth_specular.jpg");
 
-    [dayMap, cloudsMap, normalMap, specularMap].forEach((tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = maxAniso;
-    });
+    dayMap.colorSpace = THREE.SRGBColorSpace;
+    cloudsMap.colorSpace = THREE.SRGBColorSpace;
     normalMap.colorSpace = THREE.NoColorSpace;
     specularMap.colorSpace = THREE.NoColorSpace;
-
-    const earthGeo = new THREE.SphereGeometry(1.55, 64, 64);
-    const earthMat = new THREE.MeshPhongMaterial({
-      map: dayMap,
-      normalMap,
-      normalScale: new THREE.Vector2(0.85, 0.85),
-      specularMap,
-      specular: new THREE.Color(0x333333),
-      shininess: 18,
+    [dayMap, cloudsMap, normalMap, specularMap].forEach((tex) => {
+      tex.anisotropy = maxAniso;
     });
-    const earth = new THREE.Mesh(earthGeo, earthMat);
+
+    const earth = new THREE.Mesh(
+      new THREE.SphereGeometry(1.55, 64, 64),
+      new THREE.MeshPhongMaterial({
+        map: dayMap,
+        normalMap,
+        normalScale: new THREE.Vector2(0.7, 0.7),
+        specularMap,
+        specular: new THREE.Color(0x222222),
+        shininess: 12,
+      })
+    );
     globeGroup.add(earth);
 
     const clouds = new THREE.Mesh(
@@ -299,14 +298,14 @@
       new THREE.MeshPhongMaterial({
         map: cloudsMap,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.35,
         depthWrite: false,
       })
     );
     globeGroup.add(clouds);
 
     const atmosphere = new THREE.Mesh(
-      new THREE.SphereGeometry(1.68, 64, 64),
+      new THREE.SphereGeometry(1.7, 64, 64),
       new THREE.ShaderMaterial({
         vertexShader: `
           varying vec3 vNormal;
@@ -318,8 +317,8 @@
         fragmentShader: `
           varying vec3 vNormal;
           void main() {
-            float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
-            gl_FragColor = vec4(0.25, 0.65, 1.0, 1.0) * intensity;
+            float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+            gl_FragColor = vec4(0.3, 0.7, 1.0, 1.0) * intensity;
           }
         `,
         blending: THREE.AdditiveBlending,
@@ -330,93 +329,103 @@
     );
     globeGroup.add(atmosphere);
 
-    const starCount = 1400;
+    const starCount = 700;
     const starPos = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount; i++) {
-      starPos[i * 3] = (Math.random() - 0.5) * 40;
-      starPos[i * 3 + 1] = (Math.random() - 0.5) * 24;
-      starPos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 6;
+      starPos[i * 3] = (Math.random() - 0.5) * 28;
+      starPos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+      starPos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 4;
     }
     const starsGeo = new THREE.BufferGeometry();
     starsGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
     const stars = new THREE.Points(
       starsGeo,
-      new THREE.PointsMaterial({ color: 0xb8d4ff, size: 0.018, transparent: true, opacity: 0.75 })
+      new THREE.PointsMaterial({ color: 0xb8d4ff, size: 0.016, transparent: true, opacity: 0.55 })
     );
     scene.add(stars);
 
-    const sun = new THREE.DirectionalLight(0xffffff, 2.1);
-    sun.position.set(5, 2.4, 3.5);
-    const rim = new THREE.DirectionalLight(0x4da3ff, 0.55);
-    rim.position.set(-4, -1, -2);
-    const ambient = new THREE.AmbientLight(0x1a2740, 0.55);
-    scene.add(sun, rim, ambient);
+    const sun = new THREE.DirectionalLight(0xffffff, 2.6);
+    sun.position.set(5, 2.2, 4);
+    const fill = new THREE.DirectionalLight(0x7eb6ff, 0.7);
+    fill.position.set(-3, 0.5, 2);
+    const ambient = new THREE.AmbientLight(0x3a4d6e, 0.85);
+    scene.add(sun, fill, ambient);
 
-    let targetRotY = 0.35;
-    let targetRotX = 0.12;
-    let currentRotY = 0.35;
-    let currentRotX = 0.12;
-    let pointerActive = false;
+    let targetRotY = 0.45;
+    let targetRotX = 0.1;
+    let currentRotY = 0.45;
+    let currentRotX = 0.1;
+    let lastPointerAt = 0;
+    let visible = true;
 
     const onPointerMove = (e) => {
-      const x = e.clientX / window.innerWidth;
-      const y = e.clientY / window.innerHeight;
-      targetRotY = (x - 0.5) * Math.PI * 1.35;
-      targetRotX = (y - 0.5) * 0.75;
-      pointerActive = true;
+      if (!visible) return;
+      const rect = stage.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / Math.max(rect.width, 1);
+      const y = (e.clientY - rect.top) / Math.max(rect.height, 1);
+      targetRotY = (x - 0.5) * Math.PI * 1.2;
+      targetRotX = (y - 0.5) * 0.65;
+      lastPointerAt = performance.now();
     };
 
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerleave", () => {
-      pointerActive = false;
-    });
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
 
     const clock = new THREE.Clock();
     const animate = () => {
       requestAnimationFrame(animate);
+      if (!visible) return;
+
       const dt = Math.min(clock.getDelta(), 0.05);
       const t = clock.elapsedTime;
+      const pointerActive = performance.now() - lastPointerAt < 140;
 
       if (!pointerActive) {
-        targetRotY += dt * 0.14;
-        targetRotX = THREE.MathUtils.lerp(targetRotX, Math.sin(t * 0.35) * 0.08, 0.02);
+        targetRotY += dt * 0.1;
+        targetRotX = THREE.MathUtils.lerp(targetRotX, Math.sin(t * 0.3) * 0.06, 0.02);
       }
 
-      currentRotY += (targetRotY - currentRotY) * 0.045;
-      currentRotX += (targetRotX - currentRotX) * 0.045;
-      currentRotX = Math.max(-0.55, Math.min(0.55, currentRotX));
+      currentRotY += (targetRotY - currentRotY) * 0.05;
+      currentRotX += (targetRotX - currentRotX) * 0.05;
+      currentRotX = Math.max(-0.5, Math.min(0.5, currentRotX));
 
       earth.rotation.y = currentRotY;
       earth.rotation.x = currentRotX;
-      clouds.rotation.y = currentRotY * 1.08 + t * 0.02;
+      clouds.rotation.y = currentRotY * 1.06 + t * 0.015;
       clouds.rotation.x = currentRotX;
       atmosphere.rotation.copy(earth.rotation);
+      stars.rotation.y = t * 0.006;
 
-      stars.rotation.y = t * 0.008;
-      camera.position.x += ((pointerActive ? (targetRotY * 0.15) : 0) - camera.position.x) * 0.03;
-      camera.position.y += ((pointerActive ? (-targetRotX * 0.2) : 0) - camera.position.y) * 0.03;
       camera.lookAt(globeGroup.position);
-
       renderer.render(scene, camera);
     };
     animate();
 
-    const placeGlobe = () => {
+    const resize = () => {
+      const w = stage.clientWidth || window.innerWidth;
+      const h = stage.clientHeight || window.innerHeight;
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+
       const mobile = window.innerWidth < 900;
-      const scale = mobile ? 0.78 : 1.15;
-      globeGroup.scale.setScalar(scale);
-      globeGroup.position.set(mobile ? 0 : 2.35, mobile ? -0.15 : 0.05, 0);
-      camera.position.z = mobile ? 5.4 : 6.2;
+      globeGroup.scale.setScalar(mobile ? 0.85 : 1.05);
+      globeGroup.position.set(mobile ? 0.15 : 1.85, mobile ? 0.1 : 0, 0);
+      camera.position.z = mobile ? 5.6 : 5.8;
     };
 
-    const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      placeGlobe();
-    };
-    window.addEventListener("resize", onResize);
-    placeGlobe();
+    window.addEventListener("resize", resize);
+    resize();
+
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          visible = !!entry?.isIntersecting;
+          stage.style.opacity = visible ? "1" : "0";
+        },
+        { threshold: 0.05 }
+      );
+      io.observe(document.getElementById("hero"));
+    }
   }
 
   applyI18n();
