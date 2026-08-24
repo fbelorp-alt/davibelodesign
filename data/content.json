@@ -1,0 +1,324 @@
+{
+    "site": {
+        "logo": "DAVIBELO",
+        "logoAccent": "DESIGN",
+        "email": "contato@davibelodesign.com.br",
+        "whatsapp": "",
+        "social": {
+            "instagram": "",
+            "behance": "",
+            "linkedin": ""
+        }
+    },
+    "nav": {
+        "pt": {
+            "projects": "Projetos",
+            "services": "Serviços",
+            "process": "Processo",
+            "cta": "Vamos criar"
+        },
+        "en": {
+            "projects": "Projects",
+            "services": "Services",
+            "process": "Process",
+            "cta": "Let's create"
+        }
+    },
+    "hero": {
+        "pt": {
+            "eyebrow": "Estúdio Criativo Digital",
+            "line1": "MAKE",
+            "line2": "THE",
+            "line3": "UNREAL.",
+            "text": "Websites, experiências digitais, 3D, vídeos e motion design para marcas que não querem parecer iguais a todas as outras.",
+            "ctaPrimary": "Ver projetos",
+            "ctaSecondary": "Criar projeto",
+            "label1": "Sistema Criativo / Online",
+            "label2": "3D / Motion / Web",
+            "scroll": "Role para explorar"
+        },
+        "en": {
+            "eyebrow": "Digital Creative Studio",
+            "line1": "MAKE",
+            "line2": "THE",
+            "line3": "UNREAL.",
+            "text": "Websites, digital experiences, 3D, video and motion design for brands that refuse to look like everyone else.",
+            "ctaPrimary": "View projects",
+            "ctaSecondary": "Start a project",
+            "label1": "Creative System / Online",
+            "label2": "3D / Motion / Web",
+            "scroll": "Scroll to explore"
+        }
+    },
+    "marquee": {
+        "pt": "WEB DESIGN — 3D — MOTION — VÍDEO — BRANDING — EXPERIÊNCIA DIGITAL —",
+        "en": "WEB DESIGN — 3D — MOTION — VIDEO — BRANDING — DIGITAL EXPERIENCE —"
+    },
+    "manifesto": {
+        "pt": {
+            "label": "01 / A filosofia",
+            "text": "NÃO CRIO APENAS",
+            "muted1": "SITES BONITOS.",
+            "text2": "CRIO EXPERIÊNCIAS QUE FAZEM AS PESSOAS",
+            "muted2": "PARAR."
+        },
+        "en": {
+            "label": "01 / The Philosophy",
+            "text": "I DON'T JUST MAKE",
+            "muted1": "PRETTY WEBSITES.",
+            "text2": "I BUILD EXPERIENCES THAT MAKE PEOPLE",
+            "muted2": "STOP."
+        }
+    },
+    "projectsSection": {
+        "pt": {
+            "label": "Trabalhos selecionados",
+            "title": "PROJETOS",
+            "count": "04 EXPERIÊNCIAS"
+        },
+        "en": {
+            "label": "Selected Work",
+            "title": "PROJECTS",
+            "count": "04 EXPERIENCES"
+        }
+    },
+    "projects": [
+        {
+            "id": "p1",
+            "image": "",
+            "accent": "a",
+            "pt": {
+                "tag": "01 / Experiência Web",
+                "title": "Digital Universe",
+                "desc": "Website • Interação • Motion"
+            },
+            "en": {
+                "tag": "01 / Web Experience",
+                "title": "Digital Universe",
+                "desc": "Website • Interaction • Motion"
+            },
+            "link": "#"
+        },
+        {
+            "id": "p2",
+            "image": "",
+            "accent": "b",
+            "pt": {
+                "tag": "02 / 3D",
+                "title": "Future Objects",
+                "desc": "3D • CGI • Animação"
+            },
+            "en": {
+                "tag": "02 / 3D",
+                "title": "Future Objects",
+                "desc": "3D • CGI • Animation"
+            },
+            "link": "#"
+        },
+        {
+            "id": "p3",
+            "image": "",
+            "accent": "c",
+            "pt": {
+                "tag": "03 / Motion",
+                "title": "Moving Stories",
+                "desc": "Vídeo • Motion Graphics"
+            },
+            "en": {
+                "tag": "03 / Motion",
+                "title": "Moving Stories",
+                "desc": "Video • Motion Graphics"
+            },
+            "link": "#"
+        },
+        {
+            "id": "p4",
+            "image": "",
+            "accent": "a",
+            "pt": {
+                "tag": "04 / Brand Experience",
+                "title": "Beyond Identity",
+                "desc": "Branding • Direção de Arte • Digital"
+            },
+            "en": {
+                "tag": "04 / Brand Experience",
+                "title": "Beyond Identity",
+                "desc": "Branding • Art Direction • Digital"
+            },
+            "link": "#"
+        }
+    ],
+    "servicesSection": {
+        "pt": {
+            "label": "02 / O que eu crio",
+            "title": "SERVIÇOS"
+        },
+        "en": {
+            "label": "02 / What I Create",
+            "title": "SERVICES"
+        }
+    },
+    "services": [
+        {
+            "id": "s1",
+            "pt": {
+                "name": "Websites",
+                "detail": "Design / Desenvolvimento"
+            },
+            "en": {
+                "name": "Websites",
+                "detail": "Design / Development"
+            }
+        },
+        {
+            "id": "s2",
+            "pt": {
+                "name": "Design 3D",
+                "detail": "CGI / Produto"
+            },
+            "en": {
+                "name": "3D Design",
+                "detail": "CGI / Product"
+            }
+        },
+        {
+            "id": "s3",
+            "pt": {
+                "name": "Motion",
+                "detail": "Animação / Graphics"
+            },
+            "en": {
+                "name": "Motion",
+                "detail": "Animation / Graphics"
+            }
+        },
+        {
+            "id": "s4",
+            "pt": {
+                "name": "Vídeo",
+                "detail": "Film / Edição"
+            },
+            "en": {
+                "name": "Video",
+                "detail": "Film / Editing"
+            }
+        },
+        {
+            "id": "s5",
+            "pt": {
+                "name": "Branding",
+                "detail": "Identidade / Direção"
+            },
+            "en": {
+                "name": "Branding",
+                "detail": "Identity / Direction"
+            }
+        }
+    ],
+    "goal": {
+        "pt": {
+            "label": "O objetivo",
+            "title": "FAZER SUA MARCA",
+            "stroke": "IMPOSSÍVEL DE IGNORAR.",
+            "text": "A primeira impressão acontece em segundos. Eu transformo esses segundos em uma experiência que o seu cliente lembra."
+        },
+        "en": {
+            "label": "The goal",
+            "title": "MAKE YOUR BRAND",
+            "stroke": "IMPOSSIBLE TO IGNORE.",
+            "text": "First impressions happen in seconds. I turn those seconds into an experience your client never forgets."
+        }
+    },
+    "processSection": {
+        "pt": {
+            "label": "03 / Como funciona",
+            "title": "DO ZERO",
+            "titleAccent": "AO WOW."
+        },
+        "en": {
+            "label": "03 / How it works",
+            "title": "FROM ZERO",
+            "titleAccent": "TO WOW."
+        }
+    },
+    "process": [
+        {
+            "id": "pr1",
+            "num": "01 / DISCOVER",
+            "pt": {
+                "title": "Entender",
+                "text": "Entendo sua marca, seu público e principalmente o que precisa ser comunicado."
+            },
+            "en": {
+                "title": "Discover",
+                "text": "I understand your brand, your audience, and what truly needs to be communicated."
+            }
+        },
+        {
+            "id": "pr2",
+            "num": "02 / CREATE",
+            "pt": {
+                "title": "Criar",
+                "text": "Transformo estratégia em conceito visual, direção artística e experiência."
+            },
+            "en": {
+                "title": "Create",
+                "text": "I turn strategy into visual concept, art direction, and experience."
+            }
+        },
+        {
+            "id": "pr3",
+            "num": "03 / BUILD",
+            "pt": {
+                "title": "Construir",
+                "text": "Design, desenvolvimento, 3D, animação, interação e todos os detalhes."
+            },
+            "en": {
+                "title": "Build",
+                "text": "Design, development, 3D, animation, interaction, and every detail."
+            }
+        },
+        {
+            "id": "pr4",
+            "num": "04 / LAUNCH",
+            "pt": {
+                "title": "Impactar",
+                "text": "O projeto ganha vida e sua marca começa a ocupar espaço na memória das pessoas."
+            },
+            "en": {
+                "title": "Launch",
+                "text": "The project goes live and your brand starts living in people's memory."
+            }
+        }
+    ],
+    "cta": {
+        "pt": {
+            "label": "Pronto quando você estiver",
+            "line1": "LET'S",
+            "line2": "CREATE",
+            "line3": "SOMETHING.",
+            "text": "Tem uma ideia? Um negócio? Uma marca que precisa de uma nova presença digital? Vamos transformar isso em algo extraordinário.",
+            "button": "Iniciar projeto"
+        },
+        "en": {
+            "label": "Ready when you are",
+            "line1": "LET'S",
+            "line2": "CREATE",
+            "line3": "SOMETHING.",
+            "text": "Got an idea? A business? A brand that needs a new digital presence? Let's turn it into something extraordinary.",
+            "button": "Start project"
+        }
+    },
+    "footer": {
+        "pt": {
+            "brand": "DAVIBELODESIGN®",
+            "tags": "WEB • 3D • MOTION • VÍDEO",
+            "year": "© 2026"
+        },
+        "en": {
+            "brand": "DAVIBELODESIGN®",
+            "tags": "WEB • 3D • MOTION • VIDEO",
+            "year": "© 2026"
+        }
+    }
+}
