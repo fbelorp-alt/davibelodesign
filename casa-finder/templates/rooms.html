@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Cômodos · Casa Finder{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Mapa futuro</p>
+    <h1>Cômodos</h1>
+    <p class="lede">No Passo 2 cada cômodo ganha um modelo 3D. Agora só organize os espaços.</p>
+  </div>
+</section>
+
+<form class="form-panel compact" method="post" action="/comodos">
+  <div class="form-grid">
+    <label>
+      <span>Nome do cômodo *</span>
+      <input name="name" required maxlength="80" placeholder="Ex.: Lavanderia" />
+    </label>
+    <label>
+      <span>Notas</span>
+      <input name="notes" maxlength="200" placeholder="Opcional" />
+    </label>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit">Adicionar cômodo</button>
+  </div>
+</form>
+
+{% if rooms %}
+<ul class="room-list">
+  {% for room in rooms %}
+  <li class="room-row">
+    <div>
+      <h2>{{ room.name }}</h2>
+      <p class="muted">{{ room.object_count }} objeto{{ '' if room.object_count == 1 else 's' }}{% if room.notes %} · {{ room.notes }}{% endif %}</p>
+      {% if room.model_3d_path %}
+        <p class="pill">3D pronto</p>
+      {% else %}
+        <p class="pill soft">3D pendente</p>
+      {% endif %}
+    </div>
+    <form method="post" action="/comodos/{{ room.id }}/excluir" onsubmit="return confirm('Excluir cômodo? Objetos ficam sem local.');">
+      <button class="btn btn-ghost" type="submit">Excluir</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty">
+  <h2>Nenhum cômodo</h2>
+  <p>Adicione pelo menos sala, cozinha e quarto.</p>
+</div>
+{% endif %}
+{% endblock %}
