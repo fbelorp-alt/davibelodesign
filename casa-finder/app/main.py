@@ -80,10 +80,13 @@ def fetch_objects(conn, q: str = "", room_id: Optional[int] = None):
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(request: Request, q: str = "", room_id: Optional[int] = None):
+def home(request: Request, q: str = "", room_id: Optional[str] = None):
+    parsed_room_id: Optional[int] = None
+    if room_id is not None and str(room_id).strip().isdigit():
+        parsed_room_id = int(str(room_id).strip())
     with get_conn() as conn:
         rooms = fetch_rooms(conn)
-        objects = fetch_objects(conn, q=q.strip(), room_id=room_id)
+        objects = fetch_objects(conn, q=q.strip(), room_id=parsed_room_id)
         stats = {
             "objects": conn.execute("SELECT COUNT(*) AS c FROM objects").fetchone()["c"],
             "rooms": conn.execute("SELECT COUNT(*) AS c FROM rooms").fetchone()["c"],
@@ -98,7 +101,7 @@ def home(request: Request, q: str = "", room_id: Optional[int] = None):
             "objects": objects,
             "rooms": rooms,
             "q": q,
-            "room_id": room_id,
+            "room_id": parsed_room_id,
             "stats": stats,
         },
     )
