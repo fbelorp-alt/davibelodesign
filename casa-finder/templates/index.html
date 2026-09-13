@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Objetos · Casa Finder{% endblock %}
+{% block content %}
+<section class="hero-panel">
+  <div>
+    <p class="eyebrow">Inventário da casa</p>
+    <h1>Onde está?</h1>
+    <p class="lede">Cadastre objetos, diga o último cômodo e busque em segundos. Sem chip ainda — só disciplina + software.</p>
+  </div>
+  <div class="stat-row" role="list">
+    <div class="stat" role="listitem"><strong>{{ stats.objects }}</strong><span>objetos</span></div>
+    <div class="stat" role="listitem"><strong>{{ stats.rooms }}</strong><span>cômodos</span></div>
+    <div class="stat" role="listitem"><strong>{{ stats.tagged }}</strong><span>com tag</span></div>
+  </div>
+</section>
+
+<form class="search-bar" method="get" action="/">
+  <label class="sr-only" for="q">Buscar</label>
+  <input id="q" name="q" type="search" value="{{ q }}" placeholder="Buscar por nome, categoria, nota ou cômodo…" autofocus />
+  <label class="sr-only" for="room_id">Cômodo</label>
+  <select id="room_id" name="room_id">
+    <option value="">Todos os cômodos</option>
+    {% for room in rooms %}
+      <option value="{{ room.id }}" {% if room_id == room.id %}selected{% endif %}>{{ room.name }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn btn-primary" type="submit">Buscar</button>
+</form>
+
+{% if objects %}
+<ul class="object-grid">
+  {% for obj in objects %}
+  <li>
+    <a class="object-card" href="/objetos/{{ obj.id }}">
+      <div class="thumb">
+        {% if obj.photo_path %}
+          <img src="/static/{{ obj.photo_path }}" alt="" loading="lazy" />
+        {% else %}
+          <span class="thumb-fallback">{{ obj.name[:1]|upper }}</span>
+        {% endif %}
+      </div>
+      <div class="object-meta">
+        <h2>{{ obj.name }}</h2>
+        <p class="meta-line">
+          <span class="pill">{{ obj.category }}</span>
+          {% if obj.room_name %}
+            <span>{{ obj.room_name }}</span>
+          {% else %}
+            <span class="muted">Sem cômodo</span>
+          {% endif %}
+        </p>
+        {% if obj.last_seen_at %}
+          <p class="seen">Visto {{ obj.last_seen_at }}</p>
+        {% endif %}
+      </div>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty">
+  <h2>Nada por aqui</h2>
+  <p>{% if q or room_id %}Nenhum objeto bate com essa busca.{% else %}Comece pelos 10–20 itens que você mais perde.{% endif %}</p>
+  <a class="btn btn-primary" href="/objetos/novo">Cadastrar primeiro objeto</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ object.name }} · Casa Finder{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">{{ object.category }}</p>
+    <h1>{{ object.name }}</h1>
+  </div>
+  <div class="action-row">
+    <a class="btn btn-ghost" href="/">Voltar</a>
+    <a class="btn btn-primary" href="/objetos/{{ object.id }}/editar">Editar</a>
+  </div>
+</section>
+
+<article class="detail-layout">
+  <div class="detail-media">
+    {% if object.photo_path %}
+      <img src="/static/{{ object.photo_path }}" alt="Foto de {{ object.name }}" />
+    {% else %}
+      <div class="detail-placeholder">Sem foto</div>
+    {% endif %}
+  </div>
+  <div class="detail-info">
+    <dl class="facts">
+      <div>
+        <dt>Último cômodo</dt>
+        <dd>{% if object.room_name %}{{ object.room_name }}{% else %}<span class="muted">Desconhecido</span>{% endif %}</dd>
+      </div>
+      <div>
+        <dt>Visto em</dt>
+        <dd>{% if object.last_seen_at %}{{ object.last_seen_at }}{% else %}<span class="muted">—</span>{% endif %}</dd>
+      </div>
+      <div>
+        <dt>Tag</dt>
+        <dd>{% if object.tag_id %}{{ object.tag_id }}{% else %}<span class="muted">Ainda sem tag</span>{% endif %}</dd>
+      </div>
+      <div>
+        <dt>Atualizado</dt>
+        <dd>{{ object.updated_at }}</dd>
+      </div>
+    </dl>
+
+    {% if object.notes %}
+      <div class="notes-block">
+        <h2>Notas</h2>
+        <p>{{ object.notes }}</p>
+      </div>
+    {% endif %}
+
+    <form class="inline-move" method="post" action="/objetos/{{ object.id }}/mover">
+      <label>
+        <span>Atualizar localização agora</span>
+        <select name="room_id">
+          <option value="">Sem local</option>
+          {% for room in rooms %}
+            <option value="{{ room.id }}" {% if object.room_id == room.id %}selected{% endif %}>{{ room.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button class="btn btn-primary" type="submit">Salvar local</button>
+    </form>
+
+    <form method="post" action="/objetos/{{ object.id }}/excluir" onsubmit="return confirm('Excluir este objeto?');">
+      <button class="btn btn-danger" type="submit">Excluir objeto</button>
+    </form>
+  </div>
+</article>
+{% endblock %}

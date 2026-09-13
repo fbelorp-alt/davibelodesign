@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · Casa Finder{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Catálogo</p>
+    <h1>{{ title }}</h1>
+  </div>
+  <a class="btn btn-ghost" href="{% if object %}/objetos/{{ object.id }}{% else %}/{% endif %}">Voltar</a>
+</section>
+
+<form class="form-panel" method="post" enctype="multipart/form-data"
+  action="{% if object %}/objetos/{{ object.id }}{% else %}/objetos{% endif %}">
+  <div class="form-grid">
+    <label>
+      <span>Nome *</span>
+      <input name="name" required maxlength="120" value="{{ object.name if object else '' }}" placeholder="Ex.: Chaves de casa" />
+    </label>
+    <label>
+      <span>Categoria</span>
+      <input name="category" maxlength="60" value="{{ object.category if object else 'geral' }}" placeholder="chaves, eletrônicos, documentos…" />
+    </label>
+    <label>
+      <span>Último cômodo</span>
+      <select name="room_id">
+        <option value="">Não sei / sem local</option>
+        {% for room in rooms %}
+          <option value="{{ room.id }}" {% if object and object.room_id == room.id %}selected{% endif %}>{{ room.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>ID da tag (opcional, futuro BLE/NFC)</span>
+      <input name="tag_id" maxlength="120" value="{{ object.tag_id if object and object.tag_id else '' }}" placeholder="Ex.: MAC ou UUID" />
+    </label>
+    <label class="full">
+      <span>Notas</span>
+      <textarea name="notes" rows="3" placeholder="Gaveta da esquerda, bolso da mochila, etc.">{{ object.notes if object else '' }}</textarea>
+    </label>
+    <label class="full">
+      <span>Foto {% if object and object.photo_path %}(envie outra para substituir){% endif %}</span>
+      <input type="file" name="photo" accept="image/*" />
+    </label>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit">Salvar</button>
+  </div>
+</form>
+{% endblock %}

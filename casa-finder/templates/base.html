@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Casa Finder{% endblock %}</title>
+  <meta name="description" content="Catálogo de objetos da casa — Passo 1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">CF</span>
+      <span class="brand-text">
+        <strong>Casa Finder</strong>
+        <small>Passo 1 · Catálogo</small>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="{% if request.url.path == '/' %}is-on{% endif %}">Objetos</a>
+      <a href="/comodos" class="{% if request.url.path.startswith('/comodos') %}is-on{% endif %}">Cômodos</a>
+      <a class="btn btn-primary" href="/objetos/novo">+ Objeto</a>
+    </nav>
+  </header>
+  <main class="shell">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="foot">
+    <p>Mapa 3D e tags BLE entram nos próximos passos. Agora foque em cadastrar o que você perde.</p>
+  </footer>
+</body>
+</html>
