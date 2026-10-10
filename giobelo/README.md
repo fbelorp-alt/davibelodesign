@@ -2,6 +2,26 @@
 
 Cópia estática do site publicado (WordPress/Elementor na Hostinger), versionada para editar no **Cursor** e publicar via GitHub — mesmo fluxo das outras páginas do estúdio.
 
+## Retomada (depois da pausa ~3 meses)
+
+Mapa do que existia quando o foco foi para o **RPSHOW SYSTEM**:
+
+| Peça | Onde está | Situação |
+|------|-----------|----------|
+| Site público | [giobelo.com.br](https://giobelo.com.br/) | WordPress + Elementor na Hostinger — **no ar** |
+| Portal / admin | [admin.giobelo.com.br](https://admin.giobelo.com.br/admin/login) | App **Express** na Hostinger — **no ar** |
+| Código + API (dev) | Replit `file-analyzer-tool-fbelorp` | Publish **falhou**; faltava secret `MYSQL_DATABASE_URL` (banco Gio Belo) |
+| Código no Cursor | pasta `giobelo/` neste repo (PR #4) | Espelho estático home + procedimentos + privacidade |
+
+**Ordem sugerida para voltar:**
+
+1. **Merge do PR #4** — passa a editar layout/conteúdo estático em `giobelo/` no Cursor (`python3 -m http.server 8080`).
+2. **Replit → GitHub** — conectar o projeto Replit e criar repo (ex. `giobelo-admin`); trazer para um Cloud Agent dedicado.
+3. **Secrets** — `MYSQL_DATABASE_URL` só no painel (Hostinger / Cursor), nunca no Git.
+4. **Decidir prioridade** — só site, só portal, ou os dois; o WP e o Express podem seguir em paralelo até migrar.
+
+Enquanto o Replit não estiver no GitHub, o portal em produção continua sendo a referência em `admin.giobelo.com.br`.
+
 ## Rodar localmente
 
 ```bash
