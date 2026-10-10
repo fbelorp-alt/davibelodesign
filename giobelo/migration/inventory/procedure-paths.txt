@@ -1,0 +1,10 @@
+/acne-control
+/facial-labial
+/glass-skin
+/glow-skin
+/limpeza-de-pele
+/regenera-skin
+/revitalizacao-facial
+/skin-reset
+/soft-lines
+/uniform-skin

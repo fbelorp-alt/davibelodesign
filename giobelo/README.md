@@ -1,6 +1,8 @@
 # Giovanna Belo — giobelo.com.br
 
-Cópia estática do site publicado (WordPress/Elementor na Hostinger), versionada para editar no **Cursor** e publicar via GitHub — mesmo fluxo das outras páginas do estúdio.
+Cópia estática do site publicado (WordPress/Elementor na Hostinger), versionada para editar no **Cursor** e publicar via GitHub.
+
+**Plano site + sistema unificado (por fases):** leia [`ROADMAP-FASES.md`](./ROADMAP-FASES.md). Código novo entra em `platform/`; produção na Hostinger só troca na Fase 5.
 
 ## Retomada (depois da pausa ~3 meses)
 
